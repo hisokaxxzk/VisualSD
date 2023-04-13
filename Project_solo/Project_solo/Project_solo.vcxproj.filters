@@ -24,6 +24,9 @@
     <ClCompile Include="Home.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Enter_linked list.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VD.h">

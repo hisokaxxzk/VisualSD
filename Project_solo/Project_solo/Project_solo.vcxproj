@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enter_linked list.cpp" />
     <ClCompile Include="Home.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="VD.cpp" />

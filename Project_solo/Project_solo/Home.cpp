@@ -1,45 +1,29 @@
 ﻿#include "VD.h"
+coordinates home_btn[];
 void Game::home() {
 	bool new_game = true;
 	while (true)
 	{
 		if (new_game)
 		{
-			SDL_Surface* imageSurface = IMG_Load("Assets/linkedlist.png");
-			SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, imageSurface);
-			SDL_FreeSurface(imageSurface);
-            SDL_Rect dstRect;
-            dstRect.x = 100;
-            dstRect.y = 100;
-            dstRect.w = 200;
-            dstRect.h = 200;
+			makeRectangle(50, 50, 250, 180, "Linked List", 25, "Green", false, true, true);
+			makeRectangle(305, 50, 250, 180, "Stack", 25, "Blue", false, true, true);
+			makeRectangle(560, 50, 250, 180, "Queue", 25, "Grey", false, true, true);
+			makeRectangle(815, 50, 250, 180, "Static Array", 25, "Orange", false, true, true);
 
-            SDL_RenderClear(renderer);
-            SDL_RenderCopy(renderer, texture, NULL, &dstRect);
-            SDL_RenderPresent(renderer);
-
-            // Vòng lặp chính
-            SDL_Event event;
-            bool quit = false;
-            while (!quit) {
-                while (SDL_PollEvent(&event)) {
-                    if (event.type == SDL_QUIT) {
-                        quit = true;
-                    }
-                }
-            }
-
-            // Giải phóng bộ nhớ
-            SDL_DestroyTexture(texture);
-            IMG_Quit();
-			//makeRectangle(50, 50, 200, 150, "Linked List", 25, "Green", false, true, true);
-			//makeRectangle(255, 50, 200, 150, "Stack", 25, "Green", false, true, true);
+			new_game = false;
 		}
 		SDL_Event event;
 		SDL_PollEvent(&event);
 		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
-
+			int mouseX, mouseY;
+			SDL_GetMouseState(&mouseX, &mouseY);
+			if (mouseX >= 50 && mouseX <= 250 && mouseY >= 50 && mouseY <= 180) // Linked list
+			{
+				enter_linked_list();
+				break;
+			}
 		}
 		
 	}

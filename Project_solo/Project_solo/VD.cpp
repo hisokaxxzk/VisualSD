@@ -6,11 +6,11 @@ int count = 0,tempt=0;
 bool head = false, tail = false, menu_linkedlist = false, show_menu_add = false, txtinp = false, btn_map = false, save_state = true, cancel_menu = false,show_menu_add_del;
 bool run_step = false,back=false;
 coordinates state_btn[50]; lan_dau check_1st_time;
-std::vector<coordinates> linked_list(11);
 std::map<std::string, coordinates> state_btn_map;
 std::vector<Uint32*>pixels_stage(1);
 int number_coorbtn = 1;
 std::string add_position;
+std::vector<coordinates> linked_list(11);
 void update_vector(int i, int number_node,bool del,bool insert, std::string value);
 int  messbox(std::string title, std::string content, int num_button, std::string name_btn1, std::string name_btn2);
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
@@ -21,6 +21,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     color["Blue"] = { 100,149,237};
     color["Orange"] = { 255,165,0 };
     color["Grey"] = { 100,100,100 };
+    color["Yellow"] = {251,177,23};
     int flags = 0;
     if (fullscreen)
     {
@@ -64,7 +65,7 @@ void Game::rec_move(int x_pos, int y_pos, int y_end,std::string value) {
     }
     save_state = true;
 }
-int  messbox(std::string title, std::string content, int num_button, std:: string name_btn1, std::string name_btn2) {
+int  Game::messbox(std::string title, std::string content, int num_button, std:: string name_btn1, std::string name_btn2) {
     SDL_MessageBoxButtonData buttons[] = {
         { SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 0, name_btn2.c_str() },
         { 0, 1,name_btn1.c_str() }
@@ -772,10 +773,12 @@ void Game::insert_middle(std::string value) {
         SDL_RenderDrawRect(renderer, &rect);
         SDL_RenderPresent(renderer);
         dem++;
+        if (dem == number_node+1) break;
         makeLine(x + 100, 75, x + 150, 75, "Black");
         x += 150;
-        if (dem == number_node) break;
     }
+    drawRec(linked_list[number_node].x_begin, 95, 100, 100, false, "", 0, "White");
+    printText(22, 0, 0, 0, "Tail", linked_list[number_node].x_begin + 25, 95, 0, 0);
 }
 void Game::delete_first_step(int stage)
 {
@@ -1625,7 +1628,7 @@ void Game::handleEvents() {
                                             t += 5;
                                             makeLine(150, 75,t, 75, "Orange");
                                             SDL_Delay(100);
-                                            if (t == 200) break;
+                                            if (t == 200) break;    
                                         }
                                         makeLine(150, 75, 200, 75, "Black");
                                         SDL_Delay(150);
@@ -1671,7 +1674,7 @@ void Game::handleEvents() {
                                             SDL_RenderDrawRect(renderer, &rect);
                                             SDL_RenderPresent(renderer);
                                             dem++;
-                                            if (dem == number_node) break;
+                                            if (dem == number_node+1) break;
                                             makeLine(x + 100, 75, x + 150, 75, "Black");
                                             x += 150;
                                         }
@@ -1709,15 +1712,16 @@ void Game::handleEvents() {
         break;
     }
 }
-void Game::render() {
+void Game::render(std::vector<coordinates> linkedlist) {
     //SDL_RenderClear(renderer); // Clear the screen
+    linked_list = linkedlist;
     if (count == 0) {
         std::cout << "It works" << std::endl;
         for (int i = 1; i <= number_node; i++) {
             if (i == 1) head = true;
 
             if (i == number_node) tail = true;
-            Linkedlist("Empty", i);
+            Linkedlist(linked_list[i].nameID, i);
             head = false; tail = false;
         }
         count = 1;

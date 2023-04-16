@@ -1,0 +1,12 @@
+static int count = 0, tempt = 0;
+static bool head = false, tail = false, menu_linkedlist = false, show_menu_add = false, txtinp = false, btn_map = false, save_state = true, cancel_menu = false, show_menu_add_del;
+static bool run_step = false, back = false;
+static coordinates state_btn[50];
+static lan_dau check_1st_time;
+static std::map<std::string, coordinates> state_btn_map;
+static std::vector<Uint32*>pixels_stage(1);
+static int number_coorbtn = 1;
+static std::string add_position;
+static std::vector<coordinates> linked_list(1000);
+void update_vector(int i, int number_node, bool del, bool insert, std::string value);
+int  messbox(std::string title, std::string content, int num_button, std::string name_btn1, std::string name_btn2);

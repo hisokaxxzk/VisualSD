@@ -1,11 +1,4 @@
-﻿  VD.cpp
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\VD.cpp(1255,21): warning C4551: function call missing argument list
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\VD.cpp(1328,21): warning C4551: function call missing argument list
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\VD.cpp(1393,21): warning C4551: function call missing argument list
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\VD.cpp(1742,29): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\VD.cpp(1742,34): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\VD.cpp(1742,40): warning C4838: conversion from 'int' to 'Uint8' requires a narrowing conversion
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\VD.cpp(1793,27): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\VD.cpp(1793,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\VD.cpp(1805,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+﻿  Home.cpp
+  main.cpp
+  Generating Code...
   Project_solo.vcxproj -> C:\Users\Hisokaxxzk\source\repos\Project_solo\x64\Debug\Project_solo.exe

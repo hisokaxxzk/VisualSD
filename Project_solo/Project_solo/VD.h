@@ -31,7 +31,6 @@
 		std::string nameID;
 	};
 
-	void update_vector(int i, int number_node);
 		class Game {
 		public:
 			
@@ -50,24 +49,29 @@
 			void makeLine(int x_begin, int y_begin, int x_end, int y_end, std::string name_color);
 			void Linkedlist(std::string value, int curren_node);
 			void random_data();
-			void insert_first_data(std::string value);
-			void insert_first_step(std::string value, int stage);
+			void insert_first_data(std::string value, std::vector<coordinates>& linked_list);
+			void insert_first_step(std::string value, int stage, std::vector<coordinates>& linked_list);
 			void insert_last_data(std::string value);
 			void insert_last_step(std::string value, int stage);
-			void delete_first_step (int stage);
+			void delete_first_step (int stage, std::vector<coordinates>& linked_list);
 			void delete_middle_step(int stage);
-			void delete_last_step(int stage);
+			void delete_last_step(int stage, std::vector<coordinates>& linked_list);
 			void loop_node(int pos, std::string task, bool del_text);
 			void insert_middle_step(std::string value, int stage);
-			void search_Step(std::string value,int stage, int x, int i);
+			void search_Step(std::string value,int stage, int x, int i, std::vector<coordinates>& linked_list);
 			void draw_bound_rec(int x_pos, int y_pos, int width, int height, std::string namecolor);
 			void insert_middle(std::string value);
 			void rec_move(int x_pos,int y_pos, int y_end,std::string value);
 			void Edit_data(int current_node);
-			void home();
-			void enter_linked_list();
+			void home(Game *home1);
+			void enter_data();
+			void enter_data_stack();
 			void paste();
 			int messbox(std::string title, std::string content, int num_button, std::string name_btn1, std::string name_btn2);
+			void render_stack(std::vector<coordinates> linkedlist);
+			void handleEvents_stack();
+			void stack(std::string value, int current_node);
+			void random_data_stack();
 			bool running() { return isRunning; }
 			rect_connect edge;
 			int number_node;

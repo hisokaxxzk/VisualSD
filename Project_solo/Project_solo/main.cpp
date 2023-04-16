@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 	gaem->init("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1600, 800, false);
 	gaem->edge.x = 50;
 	gaem->edge.y = 50;
-	gaem->home();
+	gaem->home(gaem);
 	/*while (gaem->running())
 	{
 	}*/

@@ -1,5 +1,5 @@
 ﻿#include "VD.h"
-    std::vector<coordinates> linkedlist(11);
+std::vector<coordinates> linkedlist(1000);
     void Game::paste()
     {
             Game::drawRec(451, 51, 598, 33, false, "", 0, "White");
@@ -17,7 +17,7 @@
             printText(15, 0, 0, 0, clipboard_text, 460, 60, 0, 0);
             drawRec(600, 100, 120, 45, true, "Generate", 22, "Green");
     }
-    void Game::enter_linked_list()
+    void Game::enter_data()
     {
         int number_value = 0;
         int count_word = 0;
@@ -53,7 +53,7 @@
                             }
                         if (evt.type == SDL_KEYDOWN) {
                             if (evt.key.keysym.sym == SDLK_BACKSPACE)
-                                if (text_find.length() > 0)
+                                if (text_find.length() > 0 && count_word>0)
                                 {
                                     count_word--;
                                     drawRec(461, 55, 590, 22, false, "", 0, "White");
@@ -62,7 +62,7 @@
                                     makeLine(460, 55, 460, 70, "Black");
                                 }
                             if (number_value <= 9)
-                                if ((evt.key.keysym.sym == SDLK_KP_ENTER || evt.key.keysym.sym == SDLK_RETURN) && isdigit(text_find[text_find.length()-1]))
+                                if ((evt.key.keysym.sym == SDLK_KP_ENTER || evt.key.keysym.sym == SDLK_RETURN) && text_find.length() > 0 && isdigit(text_find[text_find.length()-1]))
                                 {
                                     text_find += ',';
                                     number_value++;
@@ -105,14 +105,13 @@
                                     }
                                 }
                             }
-                            else //Paste
-                                if (mouseX >= 1070 && mouseX <= 1170 && mouseY >= 50 && mouseY <= 85)
-                                    paste();
                                 else
                                 {
                                     drawRec(451, 51, 598, 33, false, "", 0, "White");
                                     drawRec(600, 100, 120, 45, true, "Generate", 22, "Grey");
                                     generate = false;
+                                    number_value = 0;
+                                    generate = 0;
                                     break;
                                 }
 

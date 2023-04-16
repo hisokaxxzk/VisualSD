@@ -27,9 +27,21 @@
     <ClCompile Include="Enter_linked list.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="enter_Stack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Stack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Init.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VD.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="var.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

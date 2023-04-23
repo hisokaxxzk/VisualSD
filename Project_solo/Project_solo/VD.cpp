@@ -42,7 +42,7 @@ int  Game::messbox(std::string title, std::string content, int num_button, std::
 }
 void Game::previous_stage(Uint32 *&pixels, int& stage, int width) {
     //paste
-    int height = 500;
+    int height = 300;
     SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, height);
     SDL_UpdateTexture(texture, nullptr, pixels, width * sizeof(Uint32));
     SDL_Rect destination = { 50,50,width, height };
@@ -80,8 +80,9 @@ void Game::search_Step(std::string value, int stage, int x, int i, std::vector<c
                     i++;
                     if (x == linked_list[number_node].x_begin || linked_list[i].nameID == value) {
                         int width = 1500;
-                        SDL_Rect section = { 50,50,width,500 };
-                        Uint32* pixels = new Uint32[width * 500];
+                        int height = 300;
+                        SDL_Rect section = { 50,50,width,height };
+                        Uint32* pixels = new Uint32[width * height];
                         SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
                         pixels_stage.push_back(pixels);
                         draw_bound_rec(linked_list[i].x_begin, 50, 100, 45, "Orange");
@@ -136,13 +137,9 @@ void Game::search_Step(std::string value, int stage, int x, int i, std::vector<c
         }
     }
 }
-void Game::insert_last_step(std::string value, int stage)
+void Game::insert_last_step(std::string value, int stage, std::vector<coordinates>& linked_list, int x)
 {
-    int x = 50;
     if (stage == 1) {
-        if (back) {
-            x = number_node;
-        }
         while (true)
         {
             SDL_Event e;
@@ -151,18 +148,17 @@ void Game::insert_last_step(std::string value, int stage)
                 if (e.key.keysym.sym == SDLK_RIGHT)
                 {
                     if (x == linked_list[number_node].x_begin) {
+                        draw_bound_rec(x, 50, 100, 45, "Orange");
                         stage++; back = false; break;
                     }
                     draw_bound_rec(x, 50, 100, 45, "Orange");
                     makeLine(x + 100, 75, x + 150, 75, "Orange");
                     x += 150;
-                    if (x == linked_list[number_node].x_begin) {
-                        draw_bound_rec(x, 50, 100, 45, "Orange");
-                    }
                 }
                 if (e.key.keysym.sym == SDLK_LEFT)
                 {
                     if (x != 50) {
+                        draw_bound_rec(x, 50, 100, 45, "Blue");
                         x -= 150;
                         draw_bound_rec(x, 50, 100, 45, "Blue");
                         makeLine(x + 100, 75, x + 150, 75, "Black");
@@ -176,8 +172,9 @@ void Game::insert_last_step(std::string value, int stage)
         if (!back) {
             //copy
             int width = 1500;
-            SDL_Rect section = { 50,50,width,500 };
-            Uint32* pixels = new Uint32[width * 500];
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
             pixels_stage.push_back(pixels);
             drawRec(linked_list[number_node].x_end+50,50,100, 45, true, value, 23, "Blue");
@@ -196,7 +193,7 @@ void Game::insert_last_step(std::string value, int stage)
                 {
                     back = true;
                     previous_stage(pixels_stage.back(), stage, 1500);
-                    insert_last_step(value, stage);
+                    insert_last_step(value, stage, linked_list, x);
                     break;
                 }
             }
@@ -207,8 +204,9 @@ void Game::insert_last_step(std::string value, int stage)
         if (!back) {
             //copy
             int width = 1500;
-            SDL_Rect section = { 50,50,width,500 };
-            Uint32* pixels = new Uint32[width * 500];
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
             pixels_stage.push_back(pixels);
             //
@@ -228,15 +226,14 @@ void Game::insert_last_step(std::string value, int stage)
                     linked_list[number_node + 1].y_begin = linked_list[number_node + 1].y_end = 50;
                     linked_list[number_node + 1].nameID = value;
                     number_node++;
-                    x = 50;
+                    int t = 50;
                     int dem = 1;
                     while (true) {
-                        draw_bound_rec(x, 50, 100, 45, "Blue");
+                        draw_bound_rec(t, 50, 100, 45, "Blue");
                         dem++;
-                        x += 150;
                         if (dem == number_node+1) break;
-                        makeLine(x + 100, 75, x + 150, 75, "Black");
-
+                        makeLine(t + 100, 75, t + 150, 75, "Black");
+                        t += 150;
                     }
                     messbox("", "Finish", 1, "", "OK");
                     pixels_stage.clear();
@@ -246,7 +243,7 @@ void Game::insert_last_step(std::string value, int stage)
                 {
                     back = true;
                     previous_stage(pixels_stage.back(), stage,1500);
-                    insert_last_step(value, stage);
+                    insert_last_step(value, stage, linked_list,x);
                     break;
                 }
             }
@@ -288,8 +285,9 @@ void Game::insert_middle_step(std::string value, int stage)
         if (!back) {
             //copy
             int width = 1500;
-            SDL_Rect section = { 50,50,width,500 };
-            Uint32* pixels = new Uint32[width * 500];
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
             pixels_stage.push_back(pixels);
             drawRec(linked_list[number_node / 2 + 2].x_begin, linked_list[number_node / 2 + 2].y_end + 50, 100, 45, true, value, 23, "Blue");
@@ -313,7 +311,6 @@ void Game::insert_middle_step(std::string value, int stage)
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels2, width * sizeof(Uint32));
             drawRec(linked_list[number_node / 2 + 2].x_begin, 50, width, 45, false, "", 0, "White");
             //paste
-            int height = 45;
             SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, height);
             SDL_UpdateTexture(texture, nullptr, pixels2, width * sizeof(Uint32));
             SDL_Rect destination = { linked_list[number_node / 2 + 2].x_end+50,50,width, height };
@@ -391,7 +388,7 @@ void Game::insert_first_step(std::string value, int stage, std::vector<coordinat
         //copy
         if (!back) {
             int width = 100;
-            int height = 500;
+            int height = 300;
             SDL_Rect section = { 50,50,100,height };
             Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
@@ -425,7 +422,7 @@ void Game::insert_first_step(std::string value, int stage, std::vector<coordinat
         if (!back) {
             //copy
             int width = 100;
-            int height = 500;
+            int height = 300;
             SDL_Rect section = { 50,50,100,height };
             Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
@@ -461,7 +458,7 @@ void Game::insert_first_step(std::string value, int stage, std::vector<coordinat
             makeLine(100, 160, 100, 95, "Black");
             //copy
             int width = 1500;
-            int height = 500;
+            int height = 300;
             SDL_Rect section = { 50,50,width,height };
             Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
@@ -582,9 +579,9 @@ void Game::insert_first_data(std::string value, std::vector<coordinates>& linked
         number_node++;
     }
 }
-void Game::insert_last_data(std::string value)
+void Game::insert_last_data(std::string value, std::vector<coordinates>& linked_list)
 {
-    loop_node(number_node-2, "insert", false);
+    loop_node(1,number_node-2, "insert", false);
     drawRec(linked_list[2].x_begin, 105, linked_list[number_node].x_end - linked_list[2].x_begin,40,false,"",0,"White");
     int x = 0;
     int x_end = linked_list[number_node].x_end;
@@ -616,12 +613,13 @@ void Game::insert_last_data(std::string value)
     }
 
 }   
-void Game::loop_node(int pos, std::string task, bool del_text) {
+void Game::loop_node(int pos_begin,int pos_end, std::string task, bool del_text) {
     btn_map = false;
     txtinp = true;
     save_state = false;
     int i = 1;
-    int x = 50; int x_line = 150;
+    int x = 50 + ((pos_begin-1)*150); 
+    int x_line = 150;
     if (!del_text) {
         while (true) {
             SDL_Rect rect = { x,50,100,45 };
@@ -629,7 +627,7 @@ void Game::loop_node(int pos, std::string task, bool del_text) {
             SDL_RenderDrawRect(renderer, &rect);
             SDL_RenderPresent(renderer);
             int t = x_line;
-            if (i == pos + 1)
+            if (i == pos_end + 1)
             {
                 rect = { x + 150,50,100,45 };
                 SDL_SetRenderDrawColor(renderer, 255, 165, 0, 0); //3 channels of color
@@ -667,7 +665,7 @@ void Game::loop_node(int pos, std::string task, bool del_text) {
     }
     else
     if (i != number_node - 1) {
-        i = pos + 1;
+        i = pos_end + 1;
         x = linked_list[i].x_begin;
             drawRec(x + 10 + 150, 100, 90, 50, false, "", 0, "White");
             std::string print_text = std::to_string(i - 1) + "/Aft";
@@ -675,7 +673,7 @@ void Game::loop_node(int pos, std::string task, bool del_text) {
         }
 }
 void Game::insert_middle(std::string value) {
-    loop_node(number_node / 2, "pre", false);
+    loop_node(1,number_node / 2, "pre", false);
     //draw rec in the bottom of aft node
     drawRec(linked_list[number_node / 2 + 2].x_begin, linked_list[number_node / 2 + 2].y_end + 50, 100, 45, true, value, 23, "Blue");
     //draw line link new node to aft node
@@ -774,8 +772,9 @@ void Game::delete_first_step(int stage, std::vector<coordinates>& linked_list)
         //copy
         if (!back) {
             int width = 100;
-            SDL_Rect section = { 50,50,100,500 };
-            Uint32* pixels = new Uint32[width * 500];
+            int height = 300;
+            SDL_Rect section = { 50,50,100,height };
+            Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
             pixels_stage.push_back(pixels);
             draw_bound_rec(50, 50, 100, 45,"Orange");
@@ -809,8 +808,9 @@ void Game::delete_first_step(int stage, std::vector<coordinates>& linked_list)
         if (!back) {
             //copy
             int width = 300;
-            SDL_Rect section = { 50,50,width,500 };
-            Uint32* pixels = new Uint32[width * 500];
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
             pixels_stage.push_back(pixels);
             makeLine(150,75,200,75, "Orange");
@@ -845,21 +845,22 @@ void Game::delete_first_step(int stage, std::vector<coordinates>& linked_list)
         if (!back) {
             //copy
             int width = 1500;
-            SDL_Rect section = { 50,50,width,500 };
-            Uint32* pixels = new Uint32[width * 500];
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
             pixels_stage.push_back(pixels);
             //
             //move the second node to x = 50
             width = 1300;
-            SDL_Rect section2 = {200,50,width,500 };
-            Uint32* pixels2 = new Uint32[width * 500];
+            SDL_Rect section2 = {200,50,width,height };
+            Uint32* pixels2 = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section2, SDL_PIXELFORMAT_ARGB8888, pixels2, width * sizeof(Uint32));
             //paste
             drawRec(50, 50, 1500, 80, false, "", 0, "White");
-            SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width,500);
+            SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, height);
             SDL_UpdateTexture(texture, nullptr, pixels2, width * sizeof(Uint32));
-            SDL_Rect destination = {50,50,width,500};
+            SDL_Rect destination = {50,50,width,height };
             SDL_RenderCopy(renderer, texture, nullptr, &destination);
             SDL_RenderPresent(renderer);
             SDL_DestroyTexture(texture);
@@ -876,7 +877,6 @@ void Game::delete_first_step(int stage, std::vector<coordinates>& linked_list)
                 if (e.key.keysym.sym == SDLK_LEFT)
                 {
                     back = true;
-                    number_node--;
                     previous_stage(pixels_stage.back(), stage, 1500);
                     delete_first_step(stage, linked_list);
                     break;
@@ -884,7 +884,6 @@ void Game::delete_first_step(int stage, std::vector<coordinates>& linked_list)
                 else if (e.key.keysym.sym == SDLK_RIGHT) {
                     stage++;
                     back = false;
-                    number_node--;
                     update_vector(0, number_node, true, false, "");
                     messbox("", "Finish", 1, "", "OK");
                     pixels_stage.clear();
@@ -938,8 +937,9 @@ void Game::delete_last_step(int stage, std::vector<coordinates>& linked_list)
         if (!back) {
             //copy
             int width = 1500;
-            SDL_Rect section = { 50,50,width,500 };
-            Uint32* pixels = new Uint32[width * 500];
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
             pixels_stage.push_back(pixels);
             drawRec(linked_list[number_node - 1].x_end, 50, 150, 80, false, "", 0, "White");
@@ -1013,8 +1013,9 @@ void Game::delete_middle_step(int stage) {
         {
             //copy
             int width = 1500;
-            SDL_Rect section = { 50,50,width,500 };
-            Uint32* pixels = new Uint32[width * 500];
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
             pixels_stage.push_back(pixels);
             printText(23, 0, 0, 0, "Del", linked_list[number_node / 2 + 1].x_begin, 105, 0, 0);
@@ -1048,17 +1049,17 @@ void Game::delete_middle_step(int stage) {
             {
                 //copy
                 int width = 1500;
-                SDL_Rect section = { 50,50,width,500 };
-                Uint32* pixels = new Uint32[width * 500];
+                int height = 300;
+                SDL_Rect section = { 50,50,width,height };
+                Uint32* pixels = new Uint32[width * height];
                 SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
                 pixels_stage.push_back(pixels);
                 //copy the aft node to the del node
                 width = 1500 - linked_list[number_node / 2 + 2].x_begin;
-                section = section = { linked_list[number_node / 2 + 2].x_begin,50,width,500 };
-                Uint32* pixels2 = new Uint32[width * 500];
+                section = section = { linked_list[number_node / 2 + 2].x_begin,50,width,height };
+                Uint32* pixels2 = new Uint32[width * height];
                 SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels2, width * sizeof(Uint32));
                 //Paste
-                int height = 500;
                 SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, height);
                 SDL_UpdateTexture(texture, nullptr, pixels2, width * sizeof(Uint32));
                 SDL_Rect destination = { linked_list[number_node / 2 + 1].x_begin,50,width, height };
@@ -1269,7 +1270,8 @@ void Game::handleEvents() {
                 if (state_btn[i].nameID == "Random Data") {
                     random_data(); break;
                 }
-                if (state_btn[i].nameID == "Add") { 
+                if (state_btn[i].nameID == "Add") 
+                { //insert data
                
                     btn_map = true;
                     txtinp = false;
@@ -1281,7 +1283,7 @@ void Game::handleEvents() {
                     btn_map = false;
                     show_menu_add = true;
                     break;
-                } //insert data
+                } 
                 if (show_menu_add && (state_btn[i].nameID == "Insert to the first" || state_btn[i].nameID == "Insert to the middle" || state_btn[i].nameID == "Insert to the last"))
                 {
                     save_state = true;
@@ -1329,7 +1331,7 @@ void Game::handleEvents() {
                                         if (add_position == "first")
                                             insert_first_data(inputText,linked_list);
                                         if (add_position == "last")
-                                            insert_last_data(inputText);
+                                            insert_last_data(inputText, linked_list);
                                         if (add_position == "middle")
                                             insert_middle(inputText);
                                     }
@@ -1339,7 +1341,7 @@ void Game::handleEvents() {
                                         if (add_position == "middle")
                                             insert_middle_step(inputText,1);
                                         if (add_position == "last")
-                                            insert_last_step(inputText,1);
+                                            insert_last_step(inputText,1, linked_list,50);
                                     }
                                 }
                                 show_menu_add = false;
@@ -1534,7 +1536,7 @@ void Game::handleEvents() {
                                 {
                                     if (state_btn[i].nameID == "Delete at the middle")
                                     {
-                                        loop_node(number_node / 2, "Del", false);
+                                        loop_node(1,number_node / 2, "Del", false);
                                         //dịch chuyen del node xuống
                                         i = number_node / 2 + 1;
                                         SDL_Delay(800);
@@ -1550,7 +1552,7 @@ void Game::handleEvents() {
                                             makeRectangle(linked_list[i].x_begin, 50, 150, y + 50, "", 25, "White", false, false, false);
                                         }
                                         //fix STT của next node xuống 1
-                                        loop_node(number_node / 2, "Del", true);
+                                        loop_node(1,number_node / 2, "Del", true);
                                         //move the next node and the text to the left
                                         int width = linked_list[number_node].x_end - linked_list[i + 1].x_begin;
                                         SDL_Rect section = { linked_list[i + 1].x_begin,50,width,150 };

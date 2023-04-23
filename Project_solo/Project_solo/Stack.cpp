@@ -2,13 +2,14 @@
 static int count = 0, tempt = 0;
 static bool head = false, tail = false, menu_linkedlist = false, show_menu_add = false, txtinp = false, btn_map = false, cancel_menu = false, show_menu_add_del;
 static bool run_step = false, back = false;
-static coordinates state_btn[50]; lan_dau check_1st_time;
+static coordinates state_btn[50]; 
+static lan_dau check_1st_time;
 static std::map<std::string, coordinates> state_btn_map;
 static std::vector<Uint32*>pixels_stage(1);
 static int number_coorbtn = 1;
 static std::string add_position;
 static std::vector<coordinates> linked_list(1000);
-void save_state_btn(int x_pos, int y_pos, int width_rec, int height_rec, std::string name)
+void static save_state_btn(int x_pos, int y_pos, int width_rec, int height_rec, std::string name)
 {
     state_btn[number_coorbtn].x_begin = x_pos;
     state_btn[number_coorbtn].x_end = x_pos + width_rec;
@@ -16,14 +17,14 @@ void save_state_btn(int x_pos, int y_pos, int width_rec, int height_rec, std::st
     state_btn[number_coorbtn].y_end = y_pos + height_rec;
     state_btn[number_coorbtn].nameID = name;
 }
-void save_state_btn_map(int x_pos, int y_pos, int width_rec, int height_rec, std::string name)
+void static save_state_btn_map(int x_pos, int y_pos, int width_rec, int height_rec, std::string name)
 {
     state_btn_map[name].x_begin = x_pos;
     state_btn_map[name].x_end = x_pos + width_rec;
     state_btn_map[name].y_begin = y_pos;
     state_btn_map[name].y_end = y_pos + height_rec;
 }
-void update_vector(int i, int number_node, bool del, bool insert, std::string value) {
+void static update_vector(int i, int number_node, bool del, bool insert, std::string value) {
     int sgn = 0;
     if (del)  sgn = -1;
     else  sgn = 1;
@@ -140,7 +141,7 @@ void Game::handleEvents_stack() {
                     break;
                 } //Edit data
                 if (state_btn[i].nameID == "Random Data") {
-                    random_data(); break;
+                    random_data_stack(); break;
                 }
                 if (state_btn[i].nameID == "Push") //Push data
                 {
@@ -236,7 +237,7 @@ void Game::handleEvents_stack() {
                         }
                     }
                     if (!cancel_menu) {
-                        int buttonid = messbox("", "Choose how to run", 2, "Run step by step", "Run at once");
+                        int buttonid = messbox("", "Choose how to run", 2, "Run step by step", "Run at once");  
                         if (buttonid == 0)
                         { //run at once
                             int x = 50;

@@ -1,5 +1,5 @@
 ﻿#include "VD.h"
-std::vector<coordinates> linkedlist_1(1000);
+static std::vector<coordinates> linkedlist_1(1000);
 void Game::enter_data_stack()
 {
     int number_value = 0;
@@ -9,7 +9,7 @@ void Game::enter_data_stack()
     draw_bound_rec(450, 50, 600, 35, "Black");
     drawRec(730, 100, 120, 45, true, "File", 22, "Yellow");
     drawRec(600, 100, 120, 45, true, "Generate", 22, "Grey");
-    printText(20, color["Grey"][0], color["Grey"][1], color["Grey"][2], "Enter the value of each node in the linked list, separated by Enter.", 450, 20, 0, 0);
+    printText(20, color["Grey"][0], color["Grey"][1], color["Grey"][2], "Enter the value of each node in the Stack. Separated by Enter.", 450, 20, 0, 0);
     while (true)
     {
         SDL_Event e;

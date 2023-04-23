@@ -147,11 +147,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Enter_linked list.cpp" />
+    <ClCompile Include="Enter_queue.cpp" />
     <ClCompile Include="enter_Stack.cpp" />
+    <ClCompile Include="Enter_staticj_array.cpp" />
     <ClCompile Include="Home.cpp" />
     <ClCompile Include="Init.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Queue.cpp" />
     <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="Static_Array.cpp" />
     <ClCompile Include="VD.cpp" />
   </ItemGroup>
   <ItemGroup>

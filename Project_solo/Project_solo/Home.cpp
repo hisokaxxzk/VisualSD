@@ -19,17 +19,26 @@ void Game::home(Game* home1) {
 		{
 			int mouseX, mouseY;
 			SDL_GetMouseState(&mouseX, &mouseY);
-			if (mouseX >= 50 && mouseX <= 250 && mouseY >= 50 && mouseY <= 180) // Linked list
+			if (mouseX >= 50 && mouseX <= 250 && mouseY >= 50 && mouseY <= 230) // Linked list
 			{
 				enter_data();
 				break;
 			}
-			if (mouseX >= 305 && mouseX <= 555 && mouseY >= 50 && mouseY <= 180) // Stack
+			if (mouseX >= 305 && mouseX <= 555 && mouseY >= 50 && mouseY <= 230) // Stack
 			{
 				enter_data_stack();
 				break;
 			}
-
+			if (mouseX >= 560 && mouseX <= 810 && mouseY >= 50 && mouseY <= 230) // Stack
+			{
+				enter_data_queue();
+				break;
+			}
+			if (mouseX >= 815 && mouseX <= 1065 && mouseY >= 50 && mouseY <= 230) // Stack
+			{
+				enter_data_static_array();
+				break;
+			}
 		}
 		
 	}

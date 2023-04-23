@@ -30,6 +30,10 @@
 		int y_end;
 		std::string nameID;
 	};
+	struct feature {
+		int low;
+		int fast;
+	};
 
 		class Game {
 		public:
@@ -51,12 +55,12 @@
 			void random_data();
 			void insert_first_data(std::string value, std::vector<coordinates>& linked_list);
 			void insert_first_step(std::string value, int stage, std::vector<coordinates>& linked_list);
-			void insert_last_data(std::string value);
-			void insert_last_step(std::string value, int stage);
+			void insert_last_data(std::string value, std::vector<coordinates>& linked_list);
+			void insert_last_step(std::string value, int stage, std::vector<coordinates>& linked_list,int x);
 			void delete_first_step (int stage, std::vector<coordinates>& linked_list);
 			void delete_middle_step(int stage);
 			void delete_last_step(int stage, std::vector<coordinates>& linked_list);
-			void loop_node(int pos, std::string task, bool del_text);
+			void loop_node(int pos_begin,int pos_end, std::string task, bool del_text);
 			void insert_middle_step(std::string value, int stage);
 			void search_Step(std::string value,int stage, int x, int i, std::vector<coordinates>& linked_list);
 			void draw_bound_rec(int x_pos, int y_pos, int width, int height, std::string namecolor);
@@ -66,12 +70,28 @@
 			void home(Game *home1);
 			void enter_data();
 			void enter_data_stack();
+			void enter_data_queue();
+			void enter_data_static_array();
 			void paste();
 			int messbox(std::string title, std::string content, int num_button, std::string name_btn1, std::string name_btn2);
 			void render_stack(std::vector<coordinates> linkedlist);
 			void handleEvents_stack();
 			void stack(std::string value, int current_node);
 			void random_data_stack();
+			void render_queue(std::vector<coordinates> linkedlist);
+			void queue(std::string value, int current_node);
+			void random_data_queue();
+			void handleEvents_queue();
+			void Static_Array(std::string value, int current_node);
+			void render_array(std::vector<coordinates> linkedlist);
+			void handleEvents_array();
+			void random_data_array();
+			void makeRec(int x_pos, int y_pos, int width_rec, int height_rec, std::string name, int textsize, std::string name_color, bool save_state, bool btn_map, bool txtinp);
+			void insert_middle_array(std::string value);
+			void insert_array(std::string value, int pos);
+			void insert_last_array(std::string value);
+			void loop_node_array_insert(int pos_begin, int pos_end, std::string task, bool del_text);
+			void loop_node_array_del(int pos_begin, int pos_end);
 			bool running() { return isRunning; }
 			rect_connect edge;
 			int number_node;

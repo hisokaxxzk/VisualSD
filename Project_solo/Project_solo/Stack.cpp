@@ -45,7 +45,7 @@ void static update_vector(int i, int number_node, bool del, bool insert, std::st
 }
 void Game::random_data_stack() {
     linked_list.clear();
-    linked_list.resize(11);
+    linked_list.resize(1000);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
     makeRectangle(50, 50, 1600, 80, "", 0, "White", false, false, false);
     txtinp = true;

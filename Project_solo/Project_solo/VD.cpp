@@ -1107,7 +1107,7 @@ void Game::delete_middle_step(int stage) {
 }
 void Game::random_data() {
     linked_list.clear();
-    linked_list.resize(11);
+    linked_list.resize(1000);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
     makeRectangle(50, 50, 1600,80,"",0,"White",false, false, false);
     txtinp = true;

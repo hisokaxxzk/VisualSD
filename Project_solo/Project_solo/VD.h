@@ -92,6 +92,10 @@
 			void insert_last_array(std::string value);
 			void loop_node_array_insert(int pos_begin, int pos_end, std::string task, bool del_text);
 			void loop_node_array_del(int pos_begin, int pos_end);
+			void insert_step_array(std::string value, int stage, std::vector<coordinates>& linked_list, int x, int pos);
+			void delete_step_array(int stage, std::vector<coordinates>& linked_list, int x,int pos_end, int pos_begin);
+			void previous_stage_array(Uint32*& pixels, int& stage, int width);
+			void search_Step_array(std::string value, int stage, int x, int i, std::vector<coordinates>& linked_list);
 			bool running() { return isRunning; }
 			rect_connect edge;
 			int number_node;

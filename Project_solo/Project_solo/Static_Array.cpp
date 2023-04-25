@@ -48,6 +48,19 @@ void static update_vector(int i, int number_node, bool del, bool insert, std::st
         static_array[i].x_end += sgn * 100;
     }
 }
+void Game::previous_stage_array(Uint32*& pixels, int& stage, int width) {
+    //paste
+    int height = 300;
+    SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, height);
+    SDL_UpdateTexture(texture, nullptr, pixels, width * sizeof(Uint32));
+    SDL_Rect destination = { 50,50,width, height };
+    SDL_RenderCopy(renderer, texture, nullptr, &destination);
+    SDL_RenderPresent(renderer);
+    SDL_DestroyTexture(texture);
+    delete[] pixels;
+    pixels_stage.pop_back();
+    stage--;
+}
 void Game::loop_node_array_insert(int pos_begin, int pos_end, std::string task, bool del_text) {
     int i = number_node;
     int x=static_array[number_node].x_end;
@@ -105,6 +118,87 @@ void Game::loop_node_array_del(int pos_begin, int pos_end)
         SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
     }
 }
+void Game::search_Step_array(std::string value, int stage, int x, int i, std::vector<coordinates>& linked_list)
+{
+    if (stage == 1) {
+        if (!back)
+        {
+            i = 1;
+            x = 50;
+        }
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    if (x == linked_list[number_node].x_begin || linked_list[i].nameID == value) {
+                        stage++;
+                        back = false;
+                        break;
+                    }
+                    draw_bound_rec(x, 50, 100, 45, "Orange");
+                    x += 100;
+                    i++;
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    if (x != 50) {
+                        i--;
+                        x -= 100;
+                        draw_bound_rec(x, 50, 100, 45, "Black");
+                    }
+                }
+            }
+
+        }
+    }
+    if (stage == 2) {
+        if (!back)
+        {
+            int width = 1500;
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
+            SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+            pixels_stage.push_back(pixels);
+            draw_bound_rec(x, 50, 100, 45, "Orange");
+        }
+        while (true) {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN)
+            {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    int t = 50;
+                    int dem = 1;
+                    while (true) {
+                        draw_bound_rec(t, 50, 100, 45, "Black");
+                        dem++;
+                        if (dem == number_node + 1) break;
+                        t += 100;
+
+
+                    }
+                    if (i == number_node && static_array[number_node].nameID!=value)
+                        messbox("", "Not Found", 1, "", "OK");
+                    else messbox("", "Found at index = " + std::to_string(i), 1, "", "OK");
+                    pixels_stage.clear();
+                    break;
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    back = true;
+                    previous_stage_array(pixels_stage.back(), stage, 1500);
+                    search_Step_array(value, stage, x, i, linked_list);
+                    break;
+                }
+            }
+        }
+    }
+}
 void Game::insert_array(std::string value, int pos)
 {
     loop_node_array_insert(pos+1, number_node, "", false);
@@ -121,8 +215,7 @@ void Game::insert_array(std::string value, int pos)
     }
     for (int i = number_node; i >= pos+1; i--)
         static_array[i].nameID = static_array[i - 1].nameID;
-    update_vector(number_node, number_node, false, true, static_array[number_node].nameID);
-    drawRec(static_array[number_node - 1].x_begin, 95, 100, 45, false, "", 0, "White");
+        drawRec(static_array[number_node - 1].x_begin, 95, 100, 45, false, "", 0, "White");
     draw_bound_rec(static_array[pos].x_begin, 50, 100, 45, "Orange");
     SDL_Delay(speed[speed_type] + (speed[speed_type] * 5));
     drawRec(static_array[pos].x_begin, 50, 100, 45, true, value, 23, "Blue");
@@ -143,11 +236,178 @@ void Game::insert_last_array(std::string value)
     draw_bound_rec(static_array[number_node].x_begin, 50, 100, 45, "Black");
 
 }
+void Game::insert_step_array(std::string value, int stage, std::vector<coordinates>& static_array,int x, int pos)
+{
+    if (stage == 1) {
+        x++;
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    x--;
+                    if (x ==pos) 
+                    {
+                        stage++; 
+                        back = false; 
+                        break;
+                    }
+                    drawRec(static_array[x].x_begin, 50, 100, 45, true, static_array[x - 1].nameID, 23, "Blue");
+                    draw_bound_rec(static_array[x].x_begin, 50, 100, 45, "Orange");
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    if (x != number_node+2) 
+                    {
+                        drawRec(static_array[x].x_begin, 50, 100, 45, true, static_array[x].nameID, 23, "Blue");
+                        draw_bound_rec(static_array[x].x_begin, 50, 100, 45, "Black");
+                        x++;
+                    }
+                }
+            }
 
+        }
+    }
+    if (stage == 2) {
+        if (!back) {
+            //copy
+            int width = 1500;
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
+            SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+            pixels_stage.push_back(pixels);
+            draw_bound_rec(static_array[pos].x_begin, 50, 100, 45, "Orange");
+            drawRec(static_array[pos].x_begin, 50, 100, 45, true, value, 23, "Blue");
+            draw_bound_rec(static_array[pos].x_begin, 50, 100, 45, "Orange");
+            SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        }
+    }
+        while (true) 
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN)
+            {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    number_node++;
+                    int dem = 1;
+                    int t = 50;
+                    while (true) 
+                    {
+                        draw_bound_rec(t, 50, 100, 45, "Black");
+                        dem++;
+                        if (dem == number_node + 1) break;
+                        t += 100;
+                    }
+                    for (int i = number_node; i >= pos+1; i--)
+                        static_array[i].nameID = static_array[i - 1].nameID;
+                    static_array[pos].nameID = value;
+                    draw_bound_rec(static_array[pos].x_begin, 50, 100, 45, "Black");
+                    messbox("", "Finish", 1, "", "OK");
+
+                    break;
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    back = true;
+                    previous_stage_array(pixels_stage.back(), stage, 1500);
+                    insert_step_array(value, stage, static_array,x,pos);
+                    break;
+                }
+            }
+        }  
+}
+void Game::delete_step_array( int stage, std::vector<coordinates>& linked_list, int x, int pos_begin, int pos_end)
+{
+    if (stage == 1) {
+        x--;
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    x++;
+                    if (x == number_node)
+                    {
+                        stage++;
+                        back = false;
+                        break;
+                    }
+                    drawRec(static_array[x].x_begin, 50, 100, 45, true, static_array[x+1].nameID, 23, "Blue");
+                    draw_bound_rec(static_array[x].x_begin, 50, 100, 45, "Orange");
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    if (x != pos_begin-1)
+                    {
+                        drawRec(static_array[x].x_begin, 50, 100, 45, true, static_array[x].nameID, 23, "Blue");
+                        draw_bound_rec(static_array[x].x_begin, 50, 100, 45, "Black");
+                        x--;
+                    }
+                }
+            }
+
+        }
+    }
+    if (stage == 2) {
+        if (!back) {
+            //copy
+            int width = 1500;
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
+            SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+            pixels_stage.push_back(pixels);
+            draw_bound_rec(static_array[number_node].x_begin, 50, 100, 45, "Orange");
+            drawRec(static_array[number_node].x_begin, 50, 100, 45, true,"", 23, "Blue");
+            draw_bound_rec(static_array[number_node].x_begin, 50, 100, 45, "Orange");
+            SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        }
+    }
+    while (true)
+    {
+        SDL_Event e;
+        SDL_PollEvent(&e);
+        if (e.type == SDL_KEYDOWN)
+        {
+            if (e.key.keysym.sym == SDLK_RIGHT)
+            {
+                int dem = 1;
+                int t = 50;
+                while (true)
+                {
+                    draw_bound_rec(t, 50, 100, 45, "Black");
+                    dem++;
+                    if (dem == number_node + 1) break;
+                    t += 100;
+                }
+                number_node--;
+                for (int i = pos_begin; i <= pos_end+1; i++)
+                    static_array[i].nameID = static_array[i+1].nameID;
+                messbox("", "Finish", 1, "", "OK");
+
+                break;
+            }
+            if (e.key.keysym.sym == SDLK_LEFT)
+            {
+                back = true;
+                previous_stage_array(pixels_stage.back(), stage, 1500);
+                delete_step_array(stage, static_array, x, pos_begin,pos_end);
+                break;
+            }
+        }
+    }
+}
 
 void Game::random_data_array() {
     static_array.clear();
-    static_array.resize(11);
+    static_array.resize(1000);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
     drawRec(50, 50, 1600, 80,false,"",0,"White");
     txtinp = true;
@@ -157,15 +417,19 @@ void Game::random_data_array() {
     for (int j = 1; j <= 8; j++) {
         number_node = rand() % 9 + 2;
         makeRec(50, 50, 1600, 80, "", 0, "White", false, false, false);
-        for (int i = 1; i <= number_node; i++) {
-            random_value_node = rand() % 100 + 1;
-            if (i == number_node) tail1 = true;
-            stack(std::to_string(random_value_node).c_str(), i);
-           tail1 = false;
+        for (int i = 1; i <= 14; i++) 
+        {
+            if (i <= number_node)
+            {
+                random_value_node = rand() % 100 + 1;
+                Static_Array(std::to_string(random_value_node).c_str(), i);
+            }
+            else Static_Array("", i);
+
         }
         edge.x = 50;
         edge.y = 50;
-        SDL_Delay(70);
+        SDL_Delay(50);
     }
     SDL_RenderPresent(renderer);
 }
@@ -187,13 +451,13 @@ void Game::handleEvents_array() {
             drawRec(200, 500, 500, 152, false, "", 0, "White");
             break;
         }
-        for (int i = 1; i <= number_coorbtn + number_node; i++)
+        for (int i = 1; i <= number_coorbtn + 15; i++)
         {
             if ((mouseX >= state_btn_arr[i].x_begin && mouseX <= state_btn_arr[i].x_end &&
-                mouseY >= state_btn_arr[i].y_begin && mouseY <= state_btn_arr[i].y_end) || ((i <= number_node) && ((mouseX >= static_array[i].x_begin && mouseX <= static_array[i].x_end &&
+                mouseY >= state_btn_arr[i].y_begin && mouseY <= state_btn_arr[i].y_end) || ((i <= 14) && ((mouseX >= static_array[i].x_begin && mouseX <= static_array[i].x_end &&
                     mouseY >= static_array[i].y_begin && mouseY <= static_array[i].y_end))))
             {
-                if ((i <= number_node) && ((mouseX >= static_array[i].x_begin && mouseX <= static_array[i].x_end && //Edit data
+                if ((i <= 14) && ((mouseX >= static_array[i].x_begin && mouseX <= static_array[i].x_end && //Edit data
                     mouseY >= static_array[i].y_begin && mouseY <= static_array[i].y_end))) //Edit value of linked list
                 {
                     std::string current_value = static_array[i].nameID;
@@ -230,23 +494,23 @@ void Game::handleEvents_array() {
                                     draw_bound_rec(static_array[i].x_begin, 50, 100, 45, "Orange");
                                     SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
                                     draw_bound_rec(static_array[i].x_begin, 50, 100, 45, "Black");
-
+                                    number_node = i;
                                     static_array[i].nameID = text_edit.c_str();
                                     break;
                                 }
-                                makeRec(static_array[i].x_begin, 50, 100, 45, current_value, 23, "Blue", false, false, true);
-                                break;
                             }
                         }
-                        if (evt.type == SDL_MOUSEBUTTONDOWN) {
+                        if (evt.type == SDL_MOUSEBUTTONDOWN) 
+                        {
                             makeRec(static_array[i].x_begin, 50, 100, 45, current_value, 23, "Blue", false, false, true);
+                            draw_bound_rec(static_array[i].x_begin, 50, 100, 45, "Black");
                             break;
                         }
                     }
                     break;
                 } 
                 if (state_btn_arr[i].nameID == "Random Data") {
-                    random_data_stack(); break;
+                    random_data_array(); break;
                 }
                 if (state_btn_arr[i].nameID == "Add")
                 { //insert data 
@@ -291,7 +555,7 @@ void Game::handleEvents_array() {
                                 txtinp = true;
                                 makeRec(state_btn_arr_map["Insert to the first"].x_begin, state_btn_arr_map["Insert to the first"].y_begin,
                                     state_btn_arr_map["Insert to the last"].x_end, state_btn_arr_map["input_box"].y_end, " ", 0, "White", false, false, false);
-                                if (inputText.length() > 0 && number_node < 10) 
+                                if (inputText.length() > 0 && number_node < 14) 
                                 {
                                     int buttonid = messbox("", "Choose how to run", 2, "Run step by step", "Run at once");
                                     if (buttonid == 0) { //run at once
@@ -304,11 +568,11 @@ void Game::handleEvents_array() {
                                     }
                                     else { //run step by step
                                         if (add_position == "first")
-                                            insert_first_step(inputText, 1, static_array);
+                                            insert_step_array(inputText, 1, static_array,number_node+1,1);
                                         if (add_position == "middle")
-                                            insert_middle_step(inputText, 1);
+                                            insert_step_array(inputText,1, static_array, number_node + 1, number_node / 2 + 1);
                                         if (add_position == "last")
-                                            insert_last_step(inputText, 1, static_array, 50);
+                                            insert_step_array(inputText, 1, static_array, number_node + 1, number_node+1);
                                     }
                                 }
                                 show_menu_add = false;
@@ -398,7 +662,7 @@ void Game::handleEvents_array() {
                         }
                         else
                             if (buttonid == 1) {
-                                search_Step(text_find, 1, 50, 1, static_array);
+                                search_Step_array(text_find, 1, 50, 1, static_array);
                             }
                     }
                     cancel_menu = false;
@@ -484,11 +748,11 @@ void Game::handleEvents_array() {
                             else
                             { //run step by step
                                 if (state_btn_arr[i].nameID == "Delete at the first")
-                                    delete_first_step(1, static_array);
+                                    delete_step_array(1, static_array,1,1,number_node-1);
                                 if (state_btn_arr[i].nameID == "Delete at the middle")
-                                    delete_middle_step(1);
+                                    delete_step_array(1, static_array,number_node/2+1, number_node / 2 + 1, number_node - 1);
                                 if (state_btn_arr[i].nameID == "Delete at the last")
-                                    delete_last_step(1, static_array);
+                                    delete_step_array(1, static_array, number_node, number_node, number_node);
                             }
                         }
                         if (number_node - 1 == 0)
@@ -523,7 +787,7 @@ void Game::render_array(std::vector<coordinates> linkedlist) {
     //SDL_RenderClear(renderer); // Clear the screen
     static_array = linkedlist;
     if (count == 0) {
-        for (int i = 1; i <= number_node; i++) {
+        for (int i = 1; i <= 14; i++) {
             if (i == number_node)
                 tail1 = true;
             Static_Array(static_array[i].nameID, i);
@@ -571,17 +835,8 @@ void Game::Static_Array(std::string value, int current_node)
     static_array[current_node].x_begin = rect.x; static_array[current_node].x_end = rect.x + rect.w;
     static_array[current_node].y_begin = rect.y; static_array[current_node].y_end = rect.y + 45;
     static_array[current_node].nameID = value.c_str();
-    // Draw line
-    if (!tail1) {
-        edge.x = rect.x + rect.w ;
-        edge.y = rect.y;
-    }
-    if (tail1) {
-        state_btn_arr_map["Tail"].x_begin = rect.x;
-        state_btn_arr_map["Tail"].x_end = rect.x + 100;
-        state_btn_arr_map["Tail"].y_begin = 50;
-        state_btn_arr_map["Tail"].y_end = 95;
-    }
+    edge.x = rect.x + rect.w ;
+    edge.y = rect.y;
     btn_map = true;
     if (!menu_linkedlist)
     {

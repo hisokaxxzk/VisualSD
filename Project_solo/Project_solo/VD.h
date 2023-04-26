@@ -96,10 +96,23 @@
 			void delete_step_array(int stage, std::vector<coordinates>& linked_list, int x,int pos_end, int pos_begin);
 			void previous_stage_array(Uint32*& pixels, int& stage, int width);
 			void search_Step_array(std::string value, int stage, int x, int i, std::vector<coordinates>& linked_list);
+			void enter_data_dynamic_array();
+			void render_dynamic_array(std::vector<coordinates> linkedlist);
+			void Dynamic_Arrary(std::string value, int current_node);
+			void handleEvents_dynamic_array();
+			void random_data_dynamic_array();
+			void makeRec_dynamic(int x_pos, int y_pos, int width_rec, int height_rec, std::string name, int textsize, std::string name_color, bool save_state, bool btn_map, bool txtinp);
+			void insert_dynamic_array(std::string value, int pos);
+			void loop_node_dynamic_array_insert(int pos_begin, int pos_end, std::string task, bool del_text);
+			void loop_node_dynamic_array_del(int pos_begin, int pos_end);
 			bool running() { return isRunning; }
 			rect_connect edge;
 			int number_node;
-
+			std::map<std::string, int> speed =
+			{
+				{"fast", 20},
+				{"low", 60}
+			};
 
 	private:
 		std::map<std::string, std::vector<int>> color;

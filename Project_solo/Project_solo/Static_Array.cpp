@@ -9,10 +9,7 @@ static std::vector<Uint32*>pixels_stage(1);
 static int number_coorbtn = 1;
 static std::string add_position;
 std::vector<coordinates> static_array(1000);
-std::map<std::string, int> speed = {
-    {"fast", 20},
-    {"low", 60}
-}; 
+
 static std::string speed_type = "low";
 void static save_state_btn_arr(int x_pos, int y_pos, int width_rec, int height_rec, std::string name)
 {
@@ -415,7 +412,7 @@ void Game::random_data_array() {
     edge.x = 50; edge.y = 50;
     menu_linkedlist = true;
     for (int j = 1; j <= 8; j++) {
-        number_node = rand() % 9 + 2;
+        number_node = rand() % 13 + 2;
         makeRec(50, 50, 1600, 80, "", 0, "White", false, false, false);
         for (int i = 1; i <= 14; i++) 
         {

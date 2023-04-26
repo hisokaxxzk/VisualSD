@@ -146,6 +146,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Dynamic Array.cpp" />
+    <ClCompile Include="Enter_dynamicarray.cpp" />
     <ClCompile Include="Enter_linked list.cpp" />
     <ClCompile Include="Enter_queue.cpp" />
     <ClCompile Include="enter_Stack.cpp" />

@@ -1,5 +1,5 @@
 ﻿#include "VD.h"
-static std::vector<coordinates> linkedlist_1(1000);
+static std::vector<coordinates> staticarray(1000);
 void Game::enter_data_static_array()
 {
     int number_value = 0;
@@ -9,7 +9,7 @@ void Game::enter_data_static_array()
     draw_bound_rec(450, 50, 600, 35, "Black");
     drawRec(730, 100, 120, 45, true, "File", 22, "Yellow");
     drawRec(600, 100, 120, 45, true, "Generate", 22, "Grey");
-    printText(20, color["Grey"][0], color["Grey"][1], color["Grey"][2], "Enter the value of each node in the Array. Separated by Enter.", 450, 20, 0, 0);
+    printText(19, color["Grey"][0], color["Grey"][1], color["Grey"][2], "Enter the value of each element in the array. Separate them by pressing Enter.", 450, 20, 0, 0);
     while (true)
     {
         SDL_Event e;
@@ -28,7 +28,7 @@ void Game::enter_data_static_array()
                     SDL_Event evt;
                     SDL_PollEvent(&evt);
                     if (evt.type == SDL_TEXTINPUT)
-                        if (number_value + 1 <= 10 && isdigit(evt.text.text[0]) && count_word <= 3)
+                        if (number_value + 1 <= 14   && isdigit(evt.text.text[0]) && count_word <= 3)
                         {
                             text_find += evt.text.text;
                             printText(18, 0, 0, 0, text_find, 460, 60, 0, 0);
@@ -44,7 +44,7 @@ void Game::enter_data_static_array()
                                 printText(18, 0, 0, 0, text_find, 460, 60, 0, 0);
                                 makeLine(460, 55, 460, 70, "Black");
                             }
-                        if (number_value <= 9)
+                        if (number_value <= 13)
                             if ((evt.key.keysym.sym == SDLK_KP_ENTER || evt.key.keysym.sym == SDLK_RETURN) && text_find.length() > 0 && isdigit(text_find[text_find.length() - 1]))
                             {
                                 text_find += ',';
@@ -75,13 +75,13 @@ void Game::enter_data_static_array()
                                             pos++;
                                             break;
                                         }
-                                        linkedlist_1[i + 1].nameID += text_find[pos];
+                                        staticarray[i + 1].nameID += text_find[pos];
 
                                     }
 
                                 }
                                 number_node = number_value;
-                                render_array(linkedlist_1);
+                                render_array(staticarray);
                                 while (true)
                                 {
                                     handleEvents_array();
@@ -178,12 +178,12 @@ void Game::enter_data_static_array()
                                                     pos++;
                                                     break;
                                                 }
-                                                linkedlist_1[m].nameID += text_find[pos];
+                                                staticarray[m].nameID += text_find[pos];
                                             }
                                             if (pos > text_find.length()) break;
                                         }
                                         number_node = m;
-                                        render_array(linkedlist_1);
+                                        render_array(staticarray);
                                         while (true)
                                         {
                                             handleEvents_array();

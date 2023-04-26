@@ -233,7 +233,7 @@ void Game::insert_last_array(std::string value)
     draw_bound_rec(static_array[number_node].x_begin, 50, 100, 45, "Black");
 
 }
-void Game::insert_step_array(std::string value, int stage, std::vector<coordinates>& static_array,int x, int pos)
+void Game::insert_step_array(std::string value, int stage, std::vector<coordinates>& array,int x, int pos)
 {
     if (stage == 1) {
         x++;
@@ -251,15 +251,15 @@ void Game::insert_step_array(std::string value, int stage, std::vector<coordinat
                         back = false; 
                         break;
                     }
-                    drawRec(static_array[x].x_begin, 50, 100, 45, true, static_array[x - 1].nameID, 23, "Blue");
-                    draw_bound_rec(static_array[x].x_begin, 50, 100, 45, "Orange");
+                    drawRec(array[x].x_begin, 50, 100, 45, true, array[x - 1].nameID, 23, "Blue");
+                    draw_bound_rec(array[x].x_begin, 50, 100, 45, "Orange");
                 }
                 if (e.key.keysym.sym == SDLK_LEFT)
                 {
                     if (x != number_node+2) 
                     {
-                        drawRec(static_array[x].x_begin, 50, 100, 45, true, static_array[x].nameID, 23, "Blue");
-                        draw_bound_rec(static_array[x].x_begin, 50, 100, 45, "Black");
+                        drawRec(array[x].x_begin, 50, 100, 45, true, array[x].nameID, 23, "Blue");
+                        draw_bound_rec(array[x].x_begin, 50, 100, 45, "Black");
                         x++;
                     }
                 }
@@ -276,9 +276,9 @@ void Game::insert_step_array(std::string value, int stage, std::vector<coordinat
             Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
             pixels_stage.push_back(pixels);
-            draw_bound_rec(static_array[pos].x_begin, 50, 100, 45, "Orange");
-            drawRec(static_array[pos].x_begin, 50, 100, 45, true, value, 23, "Blue");
-            draw_bound_rec(static_array[pos].x_begin, 50, 100, 45, "Orange");
+            draw_bound_rec(array[pos].x_begin, 50, 100, 45, "Orange");
+            drawRec(array[pos].x_begin, 50, 100, 45, true, value, 23, "Blue");
+            draw_bound_rec(array[pos].x_begin, 50, 100, 45, "Orange");
             SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
         }
     }
@@ -301,9 +301,9 @@ void Game::insert_step_array(std::string value, int stage, std::vector<coordinat
                         t += 100;
                     }
                     for (int i = number_node; i >= pos+1; i--)
-                        static_array[i].nameID = static_array[i - 1].nameID;
-                    static_array[pos].nameID = value;
-                    draw_bound_rec(static_array[pos].x_begin, 50, 100, 45, "Black");
+                        array[i].nameID = array[i - 1].nameID;
+                    array[pos].nameID = value;
+                    draw_bound_rec(array[pos].x_begin, 50, 100, 45, "Black");
                     messbox("", "Finish", 1, "", "OK");
 
                     break;
@@ -312,13 +312,13 @@ void Game::insert_step_array(std::string value, int stage, std::vector<coordinat
                 {
                     back = true;
                     previous_stage_array(pixels_stage.back(), stage, 1500);
-                    insert_step_array(value, stage, static_array,x,pos);
+                    insert_step_array(value, stage, array,x,pos);
                     break;
                 }
             }
         }  
 }
-void Game::delete_step_array( int stage, std::vector<coordinates>& linked_list, int x, int pos_begin, int pos_end)
+void Game::delete_step_array( int stage, std::vector<coordinates>& array, int x, int pos_begin, int pos_end)
 {
     if (stage == 1) {
         x--;
@@ -336,15 +336,15 @@ void Game::delete_step_array( int stage, std::vector<coordinates>& linked_list, 
                         back = false;
                         break;
                     }
-                    drawRec(static_array[x].x_begin, 50, 100, 45, true, static_array[x+1].nameID, 23, "Blue");
-                    draw_bound_rec(static_array[x].x_begin, 50, 100, 45, "Orange");
+                    drawRec(array[x].x_begin, 50, 100, 45, true, array[x+1].nameID, 23, "Blue");
+                    draw_bound_rec(array[x].x_begin, 50, 100, 45, "Orange");
                 }
                 if (e.key.keysym.sym == SDLK_LEFT)
                 {
                     if (x != pos_begin-1)
                     {
-                        drawRec(static_array[x].x_begin, 50, 100, 45, true, static_array[x].nameID, 23, "Blue");
-                        draw_bound_rec(static_array[x].x_begin, 50, 100, 45, "Black");
+                        drawRec(array[x].x_begin, 50, 100, 45, true, array[x].nameID, 23, "Blue");
+                        draw_bound_rec(array[x].x_begin, 50, 100, 45, "Black");
                         x--;
                     }
                 }
@@ -361,9 +361,9 @@ void Game::delete_step_array( int stage, std::vector<coordinates>& linked_list, 
             Uint32* pixels = new Uint32[width * height];
             SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
             pixels_stage.push_back(pixels);
-            draw_bound_rec(static_array[number_node].x_begin, 50, 100, 45, "Orange");
-            drawRec(static_array[number_node].x_begin, 50, 100, 45, true,"", 23, "Blue");
-            draw_bound_rec(static_array[number_node].x_begin, 50, 100, 45, "Orange");
+            draw_bound_rec(array[number_node].x_begin, 50, 100, 45, "Orange");
+            drawRec(array[number_node].x_begin, 50, 100, 45, true,"", 23, "Blue");
+            draw_bound_rec(array[number_node].x_begin, 50, 100, 45, "Orange");
             SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
         }
     }
@@ -386,7 +386,7 @@ void Game::delete_step_array( int stage, std::vector<coordinates>& linked_list, 
                 }
                 number_node--;
                 for (int i = pos_begin; i <= pos_end+1; i++)
-                    static_array[i].nameID = static_array[i+1].nameID;
+                    array[i].nameID = array[i+1].nameID;
                 messbox("", "Finish", 1, "", "OK");
 
                 break;
@@ -395,7 +395,7 @@ void Game::delete_step_array( int stage, std::vector<coordinates>& linked_list, 
             {
                 back = true;
                 previous_stage_array(pixels_stage.back(), stage, 1500);
-                delete_step_array(stage, static_array, x, pos_begin,pos_end);
+                delete_step_array(stage, array, x, pos_begin,pos_end);
                 break;
             }
         }
@@ -725,11 +725,12 @@ void Game::handleEvents_array() {
                                             if (dem == number_node + 1) break;
                                             x += 100;
                                         }
-                                        number_node--;
-                                        for (int i = 1; i <= number_node; i++)
+                                        for (int i = number_node / 2 + 1; i <= number_node; i++)
                                         {
                                             static_array[i].nameID = static_array[i + 1].nameID;
                                         }
+                                        number_node--;
+
                                     }
                                     if (state_btn_arr[i].nameID == "Delete at the last")
                                     {

@@ -11,6 +11,167 @@ static std::string add_position;
 //coordinates* dynamic_array = new coordinates[1000];
 std::vector<coordinates> dynamic_array(1000);
 static std::string speed_type = "low";
+void Game::search_Step_dynamic_array(std::string value, int stage, int x, int i, std::vector<coordinates>& linked_list)
+{
+    if (stage == 1) {
+        if (!back)
+        {
+            i = 1;
+            x = 50;
+        }
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    if (x == linked_list[number_node].x_begin || linked_list[i].nameID == value) {
+                        stage++;
+                        back = false;
+                        break;
+                    }
+                    draw_bound_rec(x, 50, 100, 45, "Orange");
+                    x += 100;
+                    i++;
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    if (x != 50) {
+                        i--;
+                        x -= 100;
+                        draw_bound_rec(x, 50, 100, 45, "Black");
+                    }
+                }
+            }
+
+        }
+    }
+    if (stage == 2) {
+        if (!back)
+        {
+            int width = 1500;
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
+            SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+            pixels_stage.push_back(pixels);
+            draw_bound_rec(x, 50, 100, 45, "Orange");
+        }
+        while (true) {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN)
+            {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    int t = 50;
+                    int dem = 1;
+                    while (true) {
+                        draw_bound_rec(t, 50, 100, 45, "Black");
+                        dem++;
+                        if (dem == number_node + 1) break;
+                        t += 100;
+
+
+                    }
+                    if (i == number_node && dynamic_array[number_node].nameID != value)
+                        messbox("", "Not Found", 1, "", "OK");
+                    else messbox("", "Found at index = " + std::to_string(i), 1, "", "OK");
+                    pixels_stage.clear();
+                    break;
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    back = true;
+                    previous_stage_array(pixels_stage.back(), stage, 1500);
+                    search_Step_array(value, stage, x, i, linked_list);
+                    break;
+                }
+            }
+        }
+    }
+}
+void Game::delete_step_dynamic_array(int stage, std::vector<coordinates>& array, int x, int pos_begin, int pos_end)
+{
+    if (stage == 1) {
+        x--;
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    x++;
+                    if (x == number_node)
+                    {
+                        stage++;
+                        back = false;
+                        break;
+                    }
+                    drawRec(array[x].x_begin, 50, 100, 45, true, array[x + 1].nameID, 23, "Blue");
+                    draw_bound_rec(array[x].x_begin, 50, 100, 45, "Orange");
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    if (x != pos_begin - 1)
+                    {
+                        drawRec(array[x].x_begin, 50, 100, 45, true, array[x].nameID, 23, "Blue");
+                        draw_bound_rec(array[x].x_begin, 50, 100, 45, "Black");
+                        x--;
+                    }
+                }
+            }
+
+        }
+    }
+    if (stage == 2) {
+        if (!back) {
+            //copy
+            int width = 1500;
+            int height = 300;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
+            SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+            pixels_stage.push_back(pixels);
+            drawRec(array[number_node].x_begin, 50, 100, 45, true, "", 23, "White");
+        }
+    }
+    while (true)
+    {
+        SDL_Event e;
+        SDL_PollEvent(&e);
+        if (e.type == SDL_KEYDOWN)
+        {
+            if (e.key.keysym.sym == SDLK_RIGHT)
+            {
+                int dem = 1;
+                int t = 50;
+                while (true)
+                {
+                    draw_bound_rec(t, 50, 100, 45, "Black");
+                    dem++;
+                    if (dem == number_node) break;
+                    t += 100;
+                }
+                number_node--;
+                for (int i = pos_begin; i <= pos_end + 1; i++)
+                    array[i].nameID = array[i + 1].nameID;
+                messbox("", "Finish", 1, "", "OK");
+
+                break;
+            }
+            if (e.key.keysym.sym == SDLK_LEFT)
+            {
+                back = true;
+                previous_stage_array(pixels_stage.back(), stage, 1500);
+                delete_step_array(stage, array, x, pos_begin, pos_end);
+                break;
+            }
+        }
+    }
+}
 void  save_state_btn_dynamic_arr(int x_pos, int y_pos, int width_rec, int height_rec, std::string name)
 {
     state_btn_dynamic_arr[number_coorbtn].x_begin = x_pos;
@@ -280,14 +441,14 @@ void Game::handleEvents_dynamic_array() {
                                         if (add_position == "middle")
                                             insert_dynamic_array(inputText, number_node / 2 + 1);
                                     }
-                                    //else { //run step by step
-                                    //    if (add_position == "first")
-                                    //        insert_step_array(inputText, 1, dynamic_array, number_node + 1, 1);
-                                    //    if (add_position == "middle")
-                                    //        insert_step_array(inputText, 1, dynamic_array, number_node + 1, number_node / 2 + 1);
-                                    //    if (add_position == "last")
-                                    //        insert_step_array(inputText, 1, dynamic_array, number_node + 1, number_node + 1);
-                                    //}
+                                    else { //run step by step
+                                        if (add_position == "first")
+                                            insert_step_array(inputText, 1, dynamic_array, number_node + 1, 1);
+                                        if (add_position == "middle")
+                                            insert_step_array(inputText, 1, dynamic_array, number_node + 1, number_node / 2 + 1);
+                                        if (add_position == "last")
+                                            insert_step_array(inputText, 1, dynamic_array, number_node + 1, number_node + 1);
+                                    }
                                 }
                                 show_menu_add = false;
                                 drawRec(dynamic_array[2].x_begin, 95, dynamic_array[number_node - 1].x_end - dynamic_array[2].x_begin, 50, false, "", 0, "White");
@@ -376,7 +537,7 @@ void Game::handleEvents_dynamic_array() {
                         }
                         else
                             if (buttonid == 1) {
-                                //search_Step_array(text_find, 1, 50, 1, dynamic_array);
+                                search_Step_dynamic_array(text_find, 1, 50, 1, dynamic_array);
                             }
                     }
                     cancel_menu = false;
@@ -428,31 +589,30 @@ void Game::handleEvents_dynamic_array() {
                                 {
                                     if (state_btn_dynamic_arr[i].nameID == "Delete at the middle")
                                     {
-                                        loop_node_array_del(number_node / 2 + 1, number_node - 1);
+                                        loop_node_dynamic_array_del(number_node / 2 + 1, number_node - 1);
                                         SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
-                                        drawRec(dynamic_array[number_node].x_begin, 50, 100, 45, false, "", 0, "Blue");
-                                        draw_bound_rec(dynamic_array[number_node].x_begin, 50, 100, 45, "Black");
+                                        drawRec(dynamic_array[number_node].x_begin, 50, 100, 45, false, "", 0, "White");
                                         //Set line color to black and rec color to blue
                                         int dem = number_node / 2 + 1;
                                         int x = dynamic_array[number_node / 2 + 1].x_begin;
                                         while (true) {
                                             draw_bound_rec(x, 50, 100, 45, "Black");
                                             dem++;
-                                            if (dem == number_node + 1) break;
+                                            if (dem == number_node) break;
                                             x += 100;
                                         }
-                                        number_node--;
-                                        for (int i = 1; i <= number_node; i++)
+                                        for (int i = number_node / 2 + 1; i <= number_node; i++)
                                         {
                                             dynamic_array[i].nameID = dynamic_array[i + 1].nameID;
                                         }
+                                        number_node--;
+
                                     }
                                     if (state_btn_dynamic_arr[i].nameID == "Delete at the last")
                                     {
-                                        drawRec(dynamic_array[number_node].x_begin, 50, 100, 45, false, "", 0, "Blue");
                                         draw_bound_rec(dynamic_array[number_node].x_begin, 50, 100, 45, "Orange");
                                         SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
-                                        draw_bound_rec(dynamic_array[number_node].x_begin, 50, 100, 45, "Black");
+                                        drawRec(dynamic_array[number_node].x_begin, 50, 100, 45, false, "", 0, "White");
                                         number_node--;
 
                                     }
@@ -460,13 +620,18 @@ void Game::handleEvents_dynamic_array() {
                             }
                             else
                             { //run step by step
-                               /* if (state_btn_dynamic_arr[i].nameID == "Delete at the first")
-                                    delete_step_array(1, dynamic_array, 1, 1, number_node - 1);
+                                if (state_btn_dynamic_arr[i].nameID == "Delete at the first")
+                                {
+                                    delete_step_dynamic_array(1, dynamic_array, 1, 1, number_node - 1);
+                                }
                                 if (state_btn_dynamic_arr[i].nameID == "Delete at the middle")
-                                    delete_step_array(1, dynamic_array, number_node / 2 + 1, number_node / 2 + 1, number_node - 1);
+                                {
+                                    delete_step_dynamic_array(1, dynamic_array, number_node / 2 + 1, number_node / 2 + 1, number_node - 1);
+                                }
                                 if (state_btn_dynamic_arr[i].nameID == "Delete at the last")
-                                    delete_step_array(1, dynamic_array, number_node, number_node, number_node);
-                               */
+                                {
+                                    delete_step_dynamic_array(1, dynamic_array, number_node, number_node, number_node);
+                                }
                             }
                         }
                         if (number_node - 1 == 0)

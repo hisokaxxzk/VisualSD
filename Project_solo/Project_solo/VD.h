@@ -105,6 +105,9 @@
 			void insert_dynamic_array(std::string value, int pos);
 			void loop_node_dynamic_array_insert(int pos_begin, int pos_end, std::string task, bool del_text);
 			void loop_node_dynamic_array_del(int pos_begin, int pos_end);
+			void search_Step_dynamic_array(std::string value, int stage, int x, int i, std::vector<coordinates>& linked_list);
+			void delete_step_dynamic_array(int stage, std::vector<coordinates>& array, int x, int pos_begin, int pos_end);
+
 			bool running() { return isRunning; }
 			rect_connect edge;
 			int number_node;

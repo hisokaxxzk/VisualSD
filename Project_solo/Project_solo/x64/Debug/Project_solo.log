@@ -1,9 +1,9 @@
 ﻿  Dynamic Array.cpp
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(172,21): warning C4551: function call missing argument list
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(240,21): warning C4551: function call missing argument list
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(314,21): warning C4551: function call missing argument list
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(542,27): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(542,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(547,28): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(555,21): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(333,21): warning C4551: function call missing argument list
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(401,21): warning C4551: function call missing argument list
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(475,21): warning C4551: function call missing argument list
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(707,27): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(707,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(712,28): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Dynamic Array.cpp(720,21): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Project_solo.vcxproj -> C:\Users\Hisokaxxzk\source\repos\Project_solo\x64\Debug\Project_solo.exe

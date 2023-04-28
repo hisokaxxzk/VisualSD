@@ -107,6 +107,14 @@
 			void loop_node_dynamic_array_del(int pos_begin, int pos_end);
 			void search_Step_dynamic_array(std::string value, int stage, int x, int i, std::vector<coordinates>& linked_list);
 			void delete_step_dynamic_array(int stage, std::vector<coordinates>& array, int x, int pos_begin, int pos_end);
+			void drawArrow(int x1, int y1, int x2, int y2, std::string color_name, short int direction);
+			void enter_DLL();
+			void DL_Linkedlist(std::string value, int current_node);
+			void makeRec_DLL(int x_pos, int y_pos, int width_rec, int height_rec, std::string name, int textsize, std::string name_color, bool save_state, bool btn_map, bool txtinp);
+			void render_dll(std::vector<coordinates> dll);
+			void handleEvents_DLL();
+			void insert_first_dll(std::string value, std::vector<coordinates>& linked_list);
+			void drawLine_animation(int x_begin, int y_begin, int x_end, int y_end, std::string color_name);
 
 			bool running() { return isRunning; }
 			rect_connect edge;
@@ -116,7 +124,7 @@
 				{"fast", 20},
 				{"low", 60}
 			};
-
+			std::string speed_type = "low";
 	private:
 		std::map<std::string, std::vector<int>> color;
 		SDL_Renderer* renderer;

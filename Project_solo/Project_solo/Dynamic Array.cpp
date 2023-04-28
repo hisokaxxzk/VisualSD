@@ -1,4 +1,4 @@
-#include "VD.h"
+﻿#include "VD.h"
 static int count = 0, tempt = 0;
 static bool tail1 = false, menu_linkedlist = false, show_menu_add = false, txtinp = false, btn_map = false, cancel_menu = false, show_menu_add_del;
 static bool run_step = false, back = false;

@@ -11,7 +11,7 @@ void Game::home(Game* home1) {
 			makeRectangle(560, 50, 250, 180, "Queue", 25, "Light green", false, true, true);
 			makeRectangle(815, 50, 250, 180, "Static Array", 25, "Orange", false, true, true);
 			makeRectangle(1070, 50, 250, 180, "Dynamic Array", 25, "Light yellow", false, true, true);
-
+			makeRectangle(1325, 50, 250, 180, "Doubly Linked List", 23, "Light red", false, true, true);
 			new_game = false;
 		}
 		SDL_Event event;
@@ -20,7 +20,7 @@ void Game::home(Game* home1) {
 		{
 			int mouseX, mouseY;
 			SDL_GetMouseState(&mouseX, &mouseY);
-			if (mouseX >= 50 && mouseX <= 250 && mouseY >= 50 && mouseY <= 230) // Linked list
+			if (mouseX >= 50 && mouseX <= 300 && mouseY >= 50 && mouseY <= 230) // Linked list
 			{
 				enter_data();
 				break;
@@ -40,9 +40,14 @@ void Game::home(Game* home1) {
 				enter_data_static_array();
 				break;
 			}
-			if (mouseX >= 1071 && mouseX <= 1321 && mouseY >= 50 && mouseY <= 230) // Dynamic Array
+			if (mouseX >= 1070 && mouseX <= 1320 && mouseY >= 50 && mouseY <= 230) // Dynamic Array
 			{
 				enter_data_dynamic_array();
+				break;
+			}
+			if (mouseX >= 1325 && mouseX <= 1575 && mouseY >= 50 && mouseY <= 230) // DLL
+			{
+				enter_DLL();
 				break;
 			}
 		}

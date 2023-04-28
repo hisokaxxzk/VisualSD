@@ -562,7 +562,7 @@ void Game::insert_first_data(std::string value, std::vector<coordinates>& linked
         makeRectangle(50, 50, 100, 45, value, 23, "Blue", false, false, true);
         makeLine(150, 75, 200, 75, "Black");
         printText(22, 0, 0, 0, "Head", 60, 105, 0, 0);
-        coordinates newElement = { 50, 100, 50, 50,value };
+        coordinates newElement = { 50, 150, 50, 50,value };
         linked_list.insert(linked_list.begin() + 1, newElement);
         for (int i = 2; i <= number_node; i++) {
             linked_list[i].x_begin += 150;

@@ -146,7 +146,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Doubly_linked_list.cpp" />
     <ClCompile Include="Dynamic Array.cpp" />
+    <ClCompile Include="Enter_DoublyLL.cpp" />
     <ClCompile Include="Enter_dynamicarray.cpp" />
     <ClCompile Include="Enter_linked list.cpp" />
     <ClCompile Include="Enter_queue.cpp" />

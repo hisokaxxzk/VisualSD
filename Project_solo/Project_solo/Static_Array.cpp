@@ -9,8 +9,6 @@ static std::vector<Uint32*>pixels_stage(1);
 static int number_coorbtn = 1;
 static std::string add_position;
 std::vector<coordinates> static_array(1000);
-
-static std::string speed_type = "low";
 void static save_state_btn_arr(int x_pos, int y_pos, int width_rec, int height_rec, std::string name)
 {
     state_btn_arr[number_coorbtn].x_begin = x_pos;

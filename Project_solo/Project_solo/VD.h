@@ -115,7 +115,9 @@
 			void handleEvents_DLL();
 			void insert_first_dll(std::string value, std::vector<coordinates>& linked_list);
 			void drawLine_animation(int x_begin, int y_begin, int x_end, int y_end, std::string color_name);
-
+			void insert_middle_dll(std::string value, std::vector<coordinates>& linked_list);
+			void insert_last_dll(std::string value, std::vector<coordinates>& linked_list);
+			void delete_dll(int pos, std::vector<coordinates>& linked_list);
 			bool running() { return isRunning; }
 			rect_connect edge;
 			int number_node;

@@ -9,6 +9,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     color["Grey"] = { 100,100,100 };
     color["Yellow"] = { 251,177,23 };
     color["Purple"] = { 178,164,255 };
+    color["Red"] = { 255, 0, 0 };
     color["Light red"] = { 255,180,180 };
     color["Light orange"] = { 244,177,131 };
     color["Light yellow"] = { 255,204,41};

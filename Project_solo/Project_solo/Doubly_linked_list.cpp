@@ -32,9 +32,10 @@ void update_vector_dll(int i, int number_node, bool del, bool insert, std::strin
 }
 void Game::drawLine_animation(int x_begin, int y_begin, int x_end, int y_end, std::string color_name)
 {
-    while (x_begin < x_end) {
-        makeLine(x_begin, 75, x_begin + 5, 75, color_name);
-        x_begin += 5;
+    int sign_change = ((x_end - x_begin) / abs(x_end - x_begin));
+    while (sign_change*x_begin < sign_change*x_end) {
+        makeLine(x_begin, y_begin, x_begin + sign_change*5, y_end, color_name);
+        x_begin += sign_change* 5;
         SDL_Delay(50);
     }
 }
@@ -81,6 +82,118 @@ void Game::insert_first_dll(std::string value, std::vector<coordinates>& linked_
         number_node++;
     }
 }
+void Game::insert_middle_dll(std::string value, std::vector<coordinates>& linked_list)
+{
+    if (number_node >= 2)
+    {
+        int dem = 1;
+        while (true)
+        {
+            draw_bound_rec(dll_linkedlist[dem].x_begin, 50, 100, 45, "Orange");
+            if (dem == number_node / 2) break;
+            drawLine_animation(dll_linkedlist[dem].x_end, 50 + 20, dll_linkedlist[dem + 1].x_begin, 50 + 20, "Orange");
+            dem++;
+        }
+        drawRec(dll_linkedlist[number_node / 2 + 1].x_begin, 160, 100, 45, true, value, 23, "Blue");
+        draw_bound_rec(dll_linkedlist[number_node / 2 + 1].x_begin, 160, 100, 45, "Orange");
+        drawArrow(dll_linkedlist[number_node / 2 + 1].x_begin + 45, 160, dll_linkedlist[number_node / 2 + 1].x_begin + 45, 95, "Black", 1);
+        drawArrow(dll_linkedlist[number_node / 2 + 1].x_begin + 55, 95, dll_linkedlist[number_node / 2 + 1].x_begin + 55, 160, "Black", 1);
+        int y_begin = 160;
+        while (y_begin > 95)
+        {
+            makeLine(dll_linkedlist[number_node / 2 + 1].x_begin + 45, y_begin, dll_linkedlist[number_node / 2 + 1].x_begin + 45, y_begin - 5, "Orange");
+            y_begin -= 5;
+            SDL_Delay(50);
+        }
+        SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        y_begin = 95;
+        while (y_begin < 160)
+        {
+            makeLine(dll_linkedlist[number_node / 2 + 1].x_begin + 55, y_begin, dll_linkedlist[number_node / 2 + 1].x_begin + 55, y_begin + 5, "Orange");
+            y_begin += 5;
+            SDL_Delay(50);
+        }
+        SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        drawRec(dll_linkedlist[number_node / 2].x_end, 50, 50, 45, false, "", 0, "White");
+        drawArrow(dll_linkedlist[number_node / 2].x_end, 50 + 30, dll_linkedlist[number_node / 2 + 1].x_begin + 10, 160, "Orange", 1);
+        SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        drawArrow(dll_linkedlist[number_node / 2 + 1].x_begin, 160 + 10, dll_linkedlist[number_node / 2].x_end - 5, 50 + 45, "Orange", 1);
+        SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        int x_begin = dll_linkedlist[number_node / 2].x_end;
+        y_begin = 50 + 30;
+        coordinates newElement = { dll_linkedlist[number_node / 2 + 1].x_begin,dll_linkedlist[number_node / 2 + 1].x_end, 50, 50,value };
+        linked_list.insert(linked_list.begin() + number_node / 2 + 1, newElement);
+        for (int i = number_node / 2 + 2; i <= number_node + 1; i++) {
+            dll_linkedlist[i].x_begin += 150;
+            dll_linkedlist[i].x_end += 150;
+        }
+        number_node += 1;
+        SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        menu_linkedlist = false;
+        drawRec(50, 50, 1550, 500, false, "", 0, "White");
+        render_dll(dll_linkedlist);
+    }
+}
+void Game::insert_last_dll(std::string value, std::vector<coordinates>& linked_list)
+{
+        int dem = 1;
+        while (true)
+        {
+            draw_bound_rec(dll_linkedlist[dem].x_begin, 50, 100, 45, "Orange");
+            if (dem == number_node) break;
+            drawLine_animation(dll_linkedlist[dem].x_end, 50 + 20, dll_linkedlist[dem + 1].x_begin, 50 + 20, "Orange");
+            dem++;
+        }
+        number_node++;
+        dll_linkedlist[number_node] = { dll_linkedlist[number_node - 1].x_begin + 150,dll_linkedlist[number_node - 1].x_end+150,50,50,value };
+        drawRec(dll_linkedlist[number_node].x_begin,50, 100, 45, true, value, 23, "Blue");
+        draw_bound_rec(dll_linkedlist[number_node].x_begin, 50, 100, 45, "Orange");
+        drawArrow(dll_linkedlist[number_node-1].x_end,50+20, dll_linkedlist[number_node].x_begin,50+20, "Black", 1);
+        drawArrow(dll_linkedlist[number_node].x_begin,50+30, dll_linkedlist[number_node-1].x_end,50+30, "Black", 1);
+        int x_begin = dll_linkedlist[number_node - 1].x_end;
+        drawLine_animation(x_begin, 70, x_begin + 50, 70, "Orange");
+        SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        x_begin = dll_linkedlist[number_node].x_begin;
+        drawLine_animation(x_begin, 80, x_begin - 50, 80, "Orange");
+        SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        menu_linkedlist = false;
+        drawRec(50, 50, 1550, 500, false, "", 0, "White");
+        render_dll(dll_linkedlist);
+}
+void Game::delete_dll (int pos, std::vector<coordinates>& linked_list)
+{
+    int dem = 1;
+    while (true)
+    {
+        draw_bound_rec(dll_linkedlist[dem].x_begin, 50, 100, 45, "Orange");
+        if (dem == pos) break;
+        drawLine_animation(dll_linkedlist[dem].x_end, 50 + 20, dll_linkedlist[dem + 1].x_begin, 50 + 20, "Orange");
+        dem++;
+    }
+    drawRec(dll_linkedlist[pos].x_begin, 50, 100, 45,true, dll_linkedlist[pos].nameID,23, "Red");
+    if (pos!=number_node)
+        drawLine_animation(dll_linkedlist[pos].x_end, 70, dll_linkedlist[pos].x_end+ 50, 70, "Orange");
+    SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+    if (pos != 1 && pos != number_node)
+    {
+        drawRec(dll_linkedlist[pos - 1].x_end, 50, 200, 45, false, "", 23, "White");
+        SDL_Delay(speed[speed_type] + (speed[speed_type] * 5));
+        drawRec(dll_linkedlist[pos].x_begin, 5, 100, 45, true, dll_linkedlist[pos].nameID, 23, "Red");
+        drawArrow(dll_linkedlist[pos].x_end, 5 + 20, dll_linkedlist[pos].x_end + 50, 50, "Orange", 1);
+        drawArrow(dll_linkedlist[pos].x_end + 50, 50 + 15, dll_linkedlist[pos].x_end, 5 + 35, "Orange", 1);
+        drawArrow(dll_linkedlist[pos - 1].x_end, 50 + 20, dll_linkedlist[pos + 1].x_begin, 50 + 20, "Orange", 1);
+        drawArrow(dll_linkedlist[pos + 1].x_begin, 50 + 30, dll_linkedlist[pos - 1].x_end, 50 + 30, "Orange", 1);
+        SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        drawRec(dll_linkedlist[pos].x_begin, 5, 150, 50 + 15, false, "", 23, "White");
+        SDL_Delay(speed[speed_type] + (speed[speed_type] * 5));
+    }
+    update_vector_dll(pos, number_node, true, false, "");
+    drawRec(50, 50, 1550, 500, false, "", 0, "White");
+    number_node--;
+    menu_linkedlist = false;
+    render_dll(dll_linkedlist);
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Game::handleEvents_DLL() {
     SDL_Event event;
@@ -214,9 +327,9 @@ void Game::handleEvents_DLL() {
                                         if (add_position == "first")
                                             insert_first_dll(inputText, dll_linkedlist);
                                         if (add_position == "last")
-                                            insert_last_data(inputText, dll_linkedlist);
+                                            insert_last_dll(inputText, dll_linkedlist);
                                         if (add_position == "middle")
-                                            insert_middle(inputText);
+                                            insert_middle_dll(inputText,dll_linkedlist);
                                     }
                                     else { //run step by step
                                         if (add_position == "first")
@@ -355,188 +468,18 @@ void Game::handleEvents_DLL() {
                             { //run at once
                                 if (state_btn_dll[i].nameID == "Delete at the first")
                                 {
-                                    //copy rec
-                                    SDL_Rect section = { 200,50,1300,45 };
-                                    Uint32* pixels = new Uint32[1300 * 45];
-                                    SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, 1300 * sizeof(Uint32));
-                                    //
-                                    SDL_Rect rect = { 50,50,100,45 };
-                                    SDL_SetRenderDrawColor(renderer, 255, 165, 0, 0); //color orange
-                                    SDL_RenderDrawRect(renderer, &rect);
-                                    SDL_RenderPresent(renderer);
-                                    int x_line = 150;
-                                    makeRec_DLL(50, 105, 150, 45, "", 0, "White", false, false, false);
-                                    printText(22, 0, 0, 0, "Temp", 60, 105, 0, 0);
-                                    while (x_line < 200) {
-                                        makeLine(x_line, 75, x_line + 5, 75, "Orange");
-                                        x_line += 5;
-                                        SDL_Delay(50);
-                                    }
-                                    printText(22, 0, 0, 0, "Head", 210, 105, 0, 0);
-                                    SDL_Delay(200);
-                                    makeRec_DLL(50, 50, 150, 45, "", 0, "White", false, false, false);
-                                    SDL_RenderPresent(renderer);
-                                    SDL_Delay(300);
-                                    int x_move_rec = 195, x_move_text = 205;
-                                    //copy text
-                                    SDL_Rect section_text = { 210,105,1300,45 };
-                                    Uint32* pixel_text = new Uint32[1300 * 45];
-                                    SDL_RenderReadPixels(renderer, &section_text, SDL_PIXELFORMAT_ARGB8888, pixel_text, 1300 * sizeof(Uint32));
-                                    //move rec to the left
-
-                                    while (x_move_rec >= 50)
-                                    {
-                                        //rec
-                                        makeRec_DLL(50, 50, 1500, 150, "", 0, "White", false, false, false);
-                                        SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 1300, 45);
-                                        SDL_UpdateTexture(texture, nullptr, pixels, 1300 * sizeof(Uint32));
-                                        SDL_Rect destination = { x_move_rec,50,1300, 45 };
-                                        SDL_RenderCopy(renderer, texture, nullptr, &destination);
-                                        SDL_RenderPresent(renderer);
-                                        SDL_DestroyTexture(texture);
-                                        //text
-                                        SDL_Texture* texture_text = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, 1300, 45);
-                                        SDL_UpdateTexture(texture_text, nullptr, pixel_text, 1300 * sizeof(Uint32));
-                                        SDL_Rect destination_text = { x_move_text,105,1300, 45 };
-                                        SDL_RenderCopy(renderer, texture_text, nullptr, &destination_text);
-                                        SDL_RenderPresent(renderer);
-                                        SDL_DestroyTexture(texture_text);
-                                        SDL_Delay(20);
-                                        x_move_rec -= 5;
-                                        x_move_text -= 5;
-
-                                    }
-                                    delete[] pixels;
-                                    delete[] pixel_text;
-                                    number_node--;
-                                    update_vector_dll(0, number_node, true, false, "");
+                                    delete_dll(1, dll_linkedlist);
                                 }
                                 else if (number_node >= 3)
                                 {
                                     if (state_btn_dll[i].nameID == "Delete at the middle")
                                     {
-                                        loop_node(1, number_node / 2, "Del", false);
-                                        //dịch chuyen del node xuống
-                                        i = number_node / 2 + 1;
-                                        SDL_Delay(800);
-                                        int y = 50;
-                                        makeRec_DLL(dll_linkedlist[i].x_begin, 50, 150, 45, "", 0, "White", false, false, false);
-                                        while (y < 160) {
-                                            y += 5;
-                                            if (y >= 75) makeLine(dll_linkedlist[i].x_begin, 75, dll_linkedlist[i].x_begin + 150, 75, "Orange");
-                                            makeRec_DLL(dll_linkedlist[i].x_begin, y, 100, 45, dll_linkedlist[i].nameID, 23, "Blue", false, false, true);
-                                            makeLine(dll_linkedlist[i].x_end, y + 25, dll_linkedlist[i + 1].x_begin, 75, "Orange");
-                                            if (y >= 160) SDL_Delay(400);
-                                            SDL_Delay(15);
-                                            makeRec_DLL(dll_linkedlist[i].x_begin, 50, 150, y + 50, "", 25, "White", false, false, false);
-                                        }
-                                        //fix STT của next node xuống 1
-                                        loop_node(1, number_node / 2, "Del", true);
-                                        //move the next node and the text to the left
-                                        int width = dll_linkedlist[number_node].x_end - dll_linkedlist[i + 1].x_begin;
-                                        SDL_Rect section = { dll_linkedlist[i + 1].x_begin,50,width,150 };
-                                        Uint32* pixels = new Uint32[1300 * 150];
-                                        SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
-                                        int x = dll_linkedlist[i + 1].x_begin;
-                                        while (x > dll_linkedlist[i].x_begin)
-                                        {
-                                            makeRec_DLL(x, 50, width, 45, "", 0, "White", false, false, false);
-                                            x -= 5;
-                                            SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, 150);
-                                            SDL_UpdateTexture(texture, nullptr, pixels, width * sizeof(Uint32));
-                                            SDL_Rect destination = { x,50,width, 150 };
-                                            SDL_RenderCopy(renderer, texture, nullptr, &destination);
-                                            SDL_RenderPresent(renderer);
-                                            SDL_DestroyTexture(texture);
-                                            makeLine(dll_linkedlist[i].x_begin, 75, x, 75, "Orange");
-                                            SDL_Delay(15);
-                                        }
-                                        SDL_Delay(300);
-                                        //Fix color of rec to blue and color of the line to black
-                                        int dem = 1;
-                                        x = 50;
-                                        while (true) {
-                                            SDL_Rect rect = { x,50,100,45 };
-                                            SDL_SetRenderDrawColor(renderer, 100, 149, 237, 0); //3 channels of color
-                                            SDL_RenderDrawRect(renderer, &rect);
-                                            SDL_RenderPresent(renderer);
-                                            dem++;
-                                            if (dem == number_node) break;
-                                            makeLine(x + 100, 75, x + 150, 75, "Black");
-                                            x += 150;
-                                        }
-                                        //Delete prev and aft text
-                                        drawRec(200, 100, dll_linkedlist[number_node - 1].x_begin - 200, 50, false, "", 0, "White");
-                                        number_node--;
-                                        update_vector_dll(i, number_node, true, false, "");
-                                        delete[] pixels;
+                                        delete_dll(number_node/2+(number_node%2), dll_linkedlist);
+
                                     }
                                     if (state_btn_dll[i].nameID == "Delete at the last")
                                     {
-                                        drawRec(50, 105, 100, 30, false, "", 0, "White");
-                                        makeLine(150, 75, 200, 75, "Orange");
-                                        printText(22, 0, 0, 0, "Head/prev", 70, 105, 0, 0);
-                                        printText(23, 0, 0, 0, "Tempt", 225, 105, 0, 0);
-                                        int t = 150;
-                                        while (true) {
-                                            t += 5;
-                                            makeLine(150, 75, t, 75, "Orange");
-                                            SDL_Delay(100);
-                                            if (t == 200) break;
-                                        }
-                                        makeLine(150, 75, 200, 75, "Black");
-                                        SDL_Delay(150);
-                                        int i = 3;
-                                        while (true)
-                                        {
-                                            drawRec(dll_linkedlist[i - 2].x_begin, 105, dll_linkedlist[i - 2].x_begin + 250, 30, false, "", 0, "White");
-                                            printText(22, 0, 0, 0, "Head", 75, 105, 0, 0);
-                                            printText(23, 0, 0, 0, "prev", dll_linkedlist[i - 1].x_begin + 25, 105, 0, 0);
-                                            if (i == number_node)
-                                                printText(22, 0, 0, 0, "Tail/Tempt", dll_linkedlist[i].x_begin + 20, 105, 0, 0);
-                                            else
-                                                printText(23, 0, 0, 0, "Tempt", dll_linkedlist[i].x_begin + 25, 105, 0, 0);
-                                            t = dll_linkedlist[i - 1].x_end;
-                                            int z = dll_linkedlist[i - 2].x_end;
-                                            while (true) {
-                                                t += 5;
-                                                z += 5;
-                                                makeLine(dll_linkedlist[i - 1].x_end, 75, t, 75, "Orange"); // new tempt node
-                                                makeLine(dll_linkedlist[i - 2].x_end, 75, z, 75, "Orange"); //redraw the prev node
-                                                if (t == dll_linkedlist[i - 1].x_end + 50) break;
-                                                SDL_Delay(80);
-                                            }
-                                            makeLine(dll_linkedlist[i - 1].x_end, 75, t, 75, "Black");
-                                            if (i == number_node) {
-                                                makeLine(dll_linkedlist[number_node - 1].x_end, 75, dll_linkedlist[number_node].x_begin, 75, "Orange");
-                                                break;
-                                            }
-                                            SDL_Delay(150);
-                                            i++;
-                                        }
-                                        drawRec(dll_linkedlist[number_node - 1].x_end, 50, dll_linkedlist[number_node - 1].x_end + 150, 45, false, "", 0, "White");
-                                        drawRec(dll_linkedlist[i - 2].x_begin, 105, dll_linkedlist[i - 2].x_begin + 250, 30, false, "", 0, "White");
-                                        dll_linkedlist[number_node].x_begin = 0;
-                                        dll_linkedlist[number_node].x_end = 0;
-                                        dll_linkedlist[number_node].y_begin = 0;
-                                        dll_linkedlist[number_node].y_end = 0;
-                                        dll_linkedlist[number_node].nameID = "";
-                                        number_node--;
-                                        printText(22, 0, 0, 0, "Tail", dll_linkedlist[number_node].x_begin + 25, 105, 0, 0);
-                                        //Fix color of rec to blue and color of the line to black
-                                        int dem = 1;
-                                        int x = 50;
-                                        while (true) {
-                                            SDL_Rect rect = { x,50,100,45 };
-                                            SDL_SetRenderDrawColor(renderer, 100, 149, 237, 0); //3 channels of color
-                                            SDL_RenderDrawRect(renderer, &rect);
-                                            SDL_RenderPresent(renderer);
-                                            dem++;
-                                            if (dem == number_node + 1) break;
-                                            makeLine(x + 100, 75, x + 150, 75, "Black");
-                                            x += 150;
-                                        }
-
+                                        delete_dll(number_node, dll_linkedlist);
                                     }
                                 }
                             }
@@ -616,7 +559,7 @@ void Game::drawArrow(int x1, int y1, int x2, int y2, std::string color_name, sho
     SDL_RenderPresent(renderer);
     if (direction == 2)
     {
-        drawArrow(x2, y1+7, x1, y2+7, color_name, 1);
+        drawArrow(x2, y1+10, x1, y2+10, color_name, 1);
     }
 }
 void Game::makeRec_DLL(int x_pos, int y_pos, int width_rec, int height_rec, std::string name, int textsize, std::string name_color, bool save_state, bool btn_map, bool txtinp) {
@@ -658,7 +601,7 @@ void Game::DL_Linkedlist(std::string value, int current_node) {
     dll_linkedlist[current_node].nameID = value.c_str();
     // Draw line
     if (!tail) {
-        drawArrow(rect.x + rect.w, rect.y + 22, rect.x + rect.w+50, rect.y + 22, "Black",2);
+        drawArrow(rect.x + rect.w,50+20, rect.x + rect.w+50,50+20, "Black",2);
         edge.x = rect.x + rect.w + 50;
         edge.y = rect.y;
     }

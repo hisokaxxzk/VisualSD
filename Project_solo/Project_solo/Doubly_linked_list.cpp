@@ -30,6 +30,33 @@ void update_vector_dll(int i, int number_node, bool del, bool insert, std::strin
         dll_linkedlist[i].x_end += sgn * 150;
     }
 }
+void Game::random_data_dll() {
+    dll_linkedlist.resize(1000);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
+    makeRectangle(0, 0, 1600, 300, "", 0, "White", false, false, false);
+    txtinp = true;
+    int random_value_node;
+    edge.x = 50; edge.y = 50;
+    for (int j = 1; j <= 8; j++) {
+        number_node = rand() % 9 + 2;
+        txtinp = false;
+        makeRectangle(50, 50, 1600, 80, "", 0, "White", false, false, false);
+        txtinp = true;
+        for (int i = 1; i <= number_node; i++) {
+            random_value_node = rand() % 100 + 1;
+            if (i == 1) head = true;
+            if (i == number_node) tail = true;
+            DL_Linkedlist(std::to_string(random_value_node).c_str(), i);
+            head = false; tail = false;
+        }
+        edge.x = 50;
+        edge.y = 50;
+        SDL_Delay(70);
+    }
+    SDL_RenderPresent(renderer);
+    save_state = true;
+}
+
 void Game::drawLine_animation(int x_begin, int y_begin, int x_end, int y_end, std::string color_name)
 {
     int sign_change = ((x_end - x_begin) / abs(x_end - x_begin));
@@ -69,8 +96,8 @@ void Game::insert_first_dll(std::string value, std::vector<coordinates>& linked_
             linked_list[i].x_end += 150;
         }
         SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
-        menu_linkedlist = false;
-        drawRec(50, 50, 1550, 500, false, "", 0, "White");
+        menu_linkedlist = true;
+        drawRec(50, 50, 1550, 300, false, "", 0, "White");
         render_dll(dll_linkedlist);
     }
     else
@@ -120,7 +147,6 @@ void Game::insert_middle_dll(std::string value, std::vector<coordinates>& linked
         drawArrow(dll_linkedlist[number_node / 2 + 1].x_begin, 160 + 10, dll_linkedlist[number_node / 2].x_end - 5, 50 + 45, "Orange", 1);
         SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
         int x_begin = dll_linkedlist[number_node / 2].x_end;
-        y_begin = 50 + 30;
         coordinates newElement = { dll_linkedlist[number_node / 2 + 1].x_begin,dll_linkedlist[number_node / 2 + 1].x_end, 50, 50,value };
         linked_list.insert(linked_list.begin() + number_node / 2 + 1, newElement);
         for (int i = number_node / 2 + 2; i <= number_node + 1; i++) {
@@ -129,8 +155,8 @@ void Game::insert_middle_dll(std::string value, std::vector<coordinates>& linked
         }
         number_node += 1;
         SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
-        menu_linkedlist = false;
-        drawRec(50, 50, 1550, 500, false, "", 0, "White");
+        menu_linkedlist = true;
+        drawRec(50, 50, 1550, 300, false, "", 0, "White");
         render_dll(dll_linkedlist);
     }
 }
@@ -156,8 +182,8 @@ void Game::insert_last_dll(std::string value, std::vector<coordinates>& linked_l
         x_begin = dll_linkedlist[number_node].x_begin;
         drawLine_animation(x_begin, 80, x_begin - 50, 80, "Orange");
         SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
-        menu_linkedlist = false;
-        drawRec(50, 50, 1550, 500, false, "", 0, "White");
+        menu_linkedlist = true;
+        drawRec(50, 50, 1550, 300, false, "", 0, "White");
         render_dll(dll_linkedlist);
 }
 void Game::delete_dll (int pos, std::vector<coordinates>& linked_list)
@@ -173,7 +199,7 @@ void Game::delete_dll (int pos, std::vector<coordinates>& linked_list)
     drawRec(dll_linkedlist[pos].x_begin, 50, 100, 45,true, dll_linkedlist[pos].nameID,23, "Red");
     if (pos!=number_node)
         drawLine_animation(dll_linkedlist[pos].x_end, 70, dll_linkedlist[pos].x_end+ 50, 70, "Orange");
-    SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+    SDL_Delay(speed[speed_type] + (speed[speed_type] * 8));
     if (pos != 1 && pos != number_node)
     {
         drawRec(dll_linkedlist[pos - 1].x_end, 50, 200, 45, false, "", 23, "White");
@@ -188,12 +214,307 @@ void Game::delete_dll (int pos, std::vector<coordinates>& linked_list)
         SDL_Delay(speed[speed_type] + (speed[speed_type] * 5));
     }
     update_vector_dll(pos, number_node, true, false, "");
-    drawRec(50, 50, 1550, 500, false, "", 0, "White");
+    drawRec(50, 50, 1550, 300, false, "", 0, "White");
     number_node--;
-    menu_linkedlist = false;
+    menu_linkedlist = true;
     render_dll(dll_linkedlist);
 }
+void Game::Edit_data_dll(int current_node) 
+{
+    int x = 50;
+    int i = 1;
+    int x_line = 150;
+    int width = (current_node - 1) * 150 + 50;
+    //copy
+    SDL_Rect section = { x,50,width,45 };
+    Uint32* pixels = new Uint32[width * 45];
+    SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+    //
+    while (i <= current_node) {
+        SDL_Rect rect = { x,50,100,45 };
+        SDL_SetRenderDrawColor(renderer, 255, 165, 0, 0); //3 channels of color
+        SDL_RenderDrawRect(renderer, &rect);
+        SDL_RenderPresent(renderer);
 
+        if (i == current_node) break;
+        int t = x_line;
+        while (x_line < t + 50) {
+            makeLine(x_line, 70, x_line + 5, 70, "Orange");
+            x_line += 5;
+            SDL_Delay(50);
+        }
+        x += 150;
+        x_line += 100;
+        i++;
+        SDL_RenderPresent(renderer);
+        SDL_Delay(300);
+    }
+    SDL_Delay(500);
+    //paste
+    SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, 45);
+    SDL_UpdateTexture(texture, nullptr, pixels, width * sizeof(Uint32));
+    SDL_Rect destination = { 50,50,width, 45 };
+    SDL_RenderCopy(renderer, texture, nullptr, &destination);
+    SDL_RenderPresent(renderer);
+    SDL_DestroyTexture(texture);
+    delete[] pixels;
+}
+void Game::previous_stage_dll(Uint32*& pixels, int& stage, int width) 
+{
+    //paste
+    int height = 500;
+    SDL_Texture* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, height);
+    SDL_UpdateTexture(texture, nullptr, pixels, width * sizeof(Uint32));
+    SDL_Rect destination = { 50,50,width, height };
+    SDL_RenderCopy(renderer, texture, nullptr, &destination);
+    SDL_RenderPresent(renderer);
+    SDL_DestroyTexture(texture);
+    delete[] pixels;
+    pixels_stage.pop_back();
+    stage--;
+}
+void Game::insert_step_dll(std::string value, int stage, std::vector<coordinates>& dll_linkedlist, int x, int pos)
+{
+    if (stage == 1) {
+        bool line = false;
+        if (back) line = true;
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN) {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    if (x == pos + 2)
+                    {
+                        stage++;
+                        back = false;
+                        break;
+                    }
+                    if (line)
+                    {
+                        makeLine(dll_linkedlist[x - 1].x_end, 70, dll_linkedlist[x - 1].x_end + 50, 70, "Orange");
+                        line = false;
+                    }
+                    else
+                    {
+                        draw_bound_rec(dll_linkedlist[x].x_begin, 50, 100, 45, "Orange");
+                        line = true;
+                        x++;
+                    }
+                    
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    if (x != 1)
+                    {
+                        if (line)
+                        {
+                            draw_bound_rec(dll_linkedlist[x - 1].x_begin, 50, 100, 45, "Blue");
+                            line = false;
+                            x--;
+                        }
+                        else
+                        {
+                            makeLine(dll_linkedlist[x-1].x_end, 70, dll_linkedlist[x].x_begin, 70, "Black");
+                            line = true;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+    if (stage == 2)
+    {
+        if (!back) {
+            //copy
+            int width = 1500;
+            int height = 500;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
+            SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+            pixels_stage.push_back(pixels);
+            drawRec(dll_linkedlist[pos+1].x_begin, 160, 100, 45, true, value, 23, "Blue");
+            draw_bound_rec(dll_linkedlist[pos+1].x_begin, 160, 100, 45, "Orange");
+            SDL_Delay(speed[speed_type] + (speed[speed_type] * 6));
+        }
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN)
+            {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    stage++;
+                    back = false;
+                    break;
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    back = true;
+                    previous_stage_dll(pixels_stage.back(), stage, 1500);
+                    insert_step_dll(value, stage, dll_linkedlist, x, pos);
+                    break;
+                }
+            }
+        }
+    }
+    if (stage == 3)
+    {
+        if (!back)
+        {
+            //copy
+            int width = 1500;
+            int height = 500;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
+            SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+            pixels_stage.push_back(pixels);
+            drawArrow(dll_linkedlist[pos + 1].x_begin + 45, 160, dll_linkedlist[pos + 1].x_begin + 45, 95, "Orange", 1);
+        }
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN)
+            {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    stage++;
+                    back = false;
+                    break;
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    back = true;
+                    previous_stage_dll(pixels_stage.back(), stage, 1500);
+                    insert_step_dll(value, stage, dll_linkedlist, x, pos);
+                    break;
+                }
+            }
+        }
+    }
+    if (stage == 4)
+    {
+        if (!back)
+        {
+            //copy
+            int width = 1500;
+            int height = 500;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
+            SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+            pixels_stage.push_back(pixels);
+            drawArrow(dll_linkedlist[pos + 1].x_begin + 55, 95, dll_linkedlist[pos + 1].x_begin + 55, 160, "Orange", 1);
+        }
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN)
+            {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    stage++;
+                    back = false;
+                    break;
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    back = true;
+                    previous_stage_dll(pixels_stage.back(), stage, 1500);
+                    insert_step_dll(value, stage, dll_linkedlist, x, pos);
+                    break;
+                }
+            }
+        }
+    }
+    if (stage == 5)
+    {
+        if (!back)
+        {
+            //copy
+            int width = 1500;
+            int height = 500;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
+            SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+            pixels_stage.push_back(pixels);
+            drawRec(dll_linkedlist[pos].x_end, 50, 50, 45, false, "", 0, "White");
+            drawArrow(dll_linkedlist[pos].x_end, 50 + 30, dll_linkedlist[pos + 1].x_begin + 10, 160, "Orange", 1);
+        }
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN)
+            {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    stage++;
+                    back = false;
+                    break;
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    back = true;
+                    previous_stage_dll(pixels_stage.back(), stage, 1500);
+                    insert_step_dll(value, stage, dll_linkedlist, x, pos);
+                    break;
+                }
+            }
+        }
+    }
+    if (stage == 6)
+    {
+        if (!back)
+        {
+            //copy
+            int width = 1500;
+            int height = 500;
+            SDL_Rect section = { 50,50,width,height };
+            Uint32* pixels = new Uint32[width * height];
+            SDL_RenderReadPixels(renderer, &section, SDL_PIXELFORMAT_ARGB8888, pixels, width * sizeof(Uint32));
+            pixels_stage.push_back(pixels);
+            drawArrow(dll_linkedlist[pos + 1].x_begin, 160 + 10, dll_linkedlist[pos].x_end - 5, 50 + 45, "Orange", 1);
+        }
+        while (true)
+        {
+            SDL_Event e;
+            SDL_PollEvent(&e);
+            if (e.type == SDL_KEYDOWN)
+            {
+                if (e.key.keysym.sym == SDLK_RIGHT)
+                {
+                    int x_begin = dll_linkedlist[pos].x_end;
+                    coordinates newElement = { dll_linkedlist[pos+1].x_begin,dll_linkedlist[pos + 1].x_end, 50, 50,value };
+                    dll_linkedlist.insert(dll_linkedlist.begin() + pos + 1, newElement);
+                    for (int i = pos + 2; i <= number_node + 1; i++) {
+                        dll_linkedlist[i].x_begin += 150;
+                        dll_linkedlist[i].x_end += 150;
+                    }
+                    number_node += 1;
+                    menu_linkedlist = true;
+                    drawRec(50, 50, 1550,300, false, "", 0, "White");
+                    render_dll(dll_linkedlist);
+                    messbox("", "Finish", 1, "", "OK");
+                    pixels_stage.clear();
+                    break;
+                }
+                if (e.key.keysym.sym == SDLK_LEFT)
+                {
+                    back = true;
+                    previous_stage_dll(pixels_stage.back(), stage, 1500);
+                    insert_step_dll(value, stage, dll_linkedlist, x, pos);
+                    break;
+                }
+            }
+        }
+    }
+       
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Game::handleEvents_DLL() {
     SDL_Event event;
@@ -251,7 +572,7 @@ void Game::handleEvents_DLL() {
                                 if (text_edit.length() > 0) {
                                     txtinp = false;
                                     makeRec_DLL(dll_linkedlist[i].x_begin, 50, 100, 45, current_value, 23, "Blue", false, false, true);
-                                    Edit_data(i);
+                                    Edit_data_dll(i);
                                     makeRec_DLL(dll_linkedlist[i].x_begin, 50, 100, 45, text_edit, 23, "Blue", false, false, true);
                                     dll_linkedlist[i].nameID = text_edit.c_str();
                                     break;
@@ -268,7 +589,7 @@ void Game::handleEvents_DLL() {
                     break;
                 } //Edit data
                 if (state_btn_dll[i].nameID == "Random Data") {
-                    random_data(); break;
+                    random_data_dll(); break;
                 }
                 if (state_btn_dll[i].nameID == "Add")
                 { //insert data
@@ -333,9 +654,9 @@ void Game::handleEvents_DLL() {
                                     }
                                     else { //run step by step
                                         if (add_position == "first")
-                                            insert_first_step(inputText, 1, dll_linkedlist);
+                                            insert_step_dll(inputText, 1, dll_linkedlist,1,1);
                                         if (add_position == "middle")
-                                            insert_middle_step(inputText, 1);
+                                            insert_step_dll(inputText, 1, dll_linkedlist,1,number_node/2+(number_node%2));
                                         if (add_position == "last")
                                             insert_last_step(inputText, 1, dll_linkedlist, 50);
                                     }
@@ -414,7 +735,7 @@ void Game::handleEvents_DLL() {
                                 int t = x_line;
                                 if (i == number_node || text_find == dll_linkedlist[i].nameID) break;
                                 while (x_line < t + 50) {
-                                    makeLine(x_line, 75, x_line + 5, 75, "Orange");
+                                    makeLine(x_line,70, x_line + 5, 70, "Orange");
                                     x_line += 5;
                                     SDL_Delay(50);
                                 }
@@ -461,7 +782,7 @@ void Game::handleEvents_DLL() {
 
                         show_menu_add_del = false;
                         drawRec(200, state_btn_dll_map["Delete"].y_begin, state_btn_dll_map["Delete at the last"].x_end, 50, false, "", 0, "White");
-                        if (number_node >= 2)
+                        if (number_node >= 1)
                         {
                             int buttonid = messbox("", "Choose how to run", 2, "Run step by step", "Run at once");
                             if (buttonid == 0)
@@ -470,6 +791,10 @@ void Game::handleEvents_DLL() {
                                 {
                                     delete_dll(1, dll_linkedlist);
                                 }
+                                if (state_btn_dll[i].nameID == "Delete at the last")
+                                {
+                                    delete_dll(number_node, dll_linkedlist);
+                                }
                                 else if (number_node >= 3)
                                 {
                                     if (state_btn_dll[i].nameID == "Delete at the middle")
@@ -477,10 +802,7 @@ void Game::handleEvents_DLL() {
                                         delete_dll(number_node/2+(number_node%2), dll_linkedlist);
 
                                     }
-                                    if (state_btn_dll[i].nameID == "Delete at the last")
-                                    {
-                                        delete_dll(number_node, dll_linkedlist);
-                                    }
+
                                 }
                             }
                             else
@@ -492,15 +814,6 @@ void Game::handleEvents_DLL() {
                                 if (state_btn_dll[i].nameID == "Delete at the last")
                                     delete_last_step(1, dll_linkedlist);
                             }
-                        }
-                        if (number_node - 1 == 0)
-                        {
-                            number_node--;
-                            draw_bound_rec(50, 50, 100, 45, "Orange");
-                            SDL_Delay(300);
-                            drawRec(50, 50, 100, 150, false, "", 22, "White");
-                            dll_linkedlist[1] = {};
-
                         }
 
                         break;
@@ -604,13 +917,6 @@ void Game::DL_Linkedlist(std::string value, int current_node) {
         drawArrow(rect.x + rect.w,50+20, rect.x + rect.w+50,50+20, "Black",2);
         edge.x = rect.x + rect.w + 50;
         edge.y = rect.y;
-    }
-
-    if (tail) {
-        state_btn_dll_map["Tail"].x_begin = rect.x;
-        state_btn_dll_map["Tail"].x_end = rect.x + 100;
-        state_btn_dll_map["Tail"].y_begin = 50;
-        state_btn_dll_map["Tail"].y_end = 95;
     }
     btn_map = true;
     if (!menu_linkedlist)

@@ -118,6 +118,10 @@
 			void insert_middle_dll(std::string value, std::vector<coordinates>& linked_list);
 			void insert_last_dll(std::string value, std::vector<coordinates>& linked_list);
 			void delete_dll(int pos, std::vector<coordinates>& linked_list);
+			void Edit_data_dll(int current_node);
+			void random_data_dll();
+			void insert_step_dll(std::string value, int stage, std::vector<coordinates>& dll_linkedlist, int x, int pos);
+			void previous_stage_dll(Uint32 * &pixels, int& stage, int width);
 			bool running() { return isRunning; }
 			rect_connect edge;
 			int number_node;

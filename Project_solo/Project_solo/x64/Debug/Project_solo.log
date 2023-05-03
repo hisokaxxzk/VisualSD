@@ -1,12 +1,12 @@
 ﻿  Doubly_linked_list.cpp
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(550,21): warning C4551: function call missing argument list
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(620,21): warning C4551: function call missing argument list
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(685,21): warning C4551: function call missing argument list
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(864,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(865,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(866,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(867,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(906,27): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(906,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(918,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(861,21): warning C4551: function call missing argument list
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(931,21): warning C4551: function call missing argument list
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(996,21): warning C4551: function call missing argument list
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(1175,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(1176,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(1177,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(1178,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(1217,27): warning C4838: conversion from 'float' to 'int' requires a narrowing conversion
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(1217,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Hisokaxxzk\source\repos\Project_solo\Project_solo\Doubly_linked_list.cpp(1229,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Project_solo.vcxproj -> C:\Users\Hisokaxxzk\source\repos\Project_solo\x64\Debug\Project_solo.exe

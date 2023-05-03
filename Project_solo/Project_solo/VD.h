@@ -122,6 +122,8 @@
 			void random_data_dll();
 			void insert_step_dll(std::string value, int stage, std::vector<coordinates>& dll_linkedlist, int x, int pos);
 			void previous_stage_dll(Uint32 * &pixels, int& stage, int width);
+			void insert_last_step_dll(std::string value, int stage, std::vector<coordinates>& dll_linkedlist, int x, int pos);
+			void delete_step_dll(int stage, std::vector<coordinates>& dll_linkedlist, int x);
 			bool running() { return isRunning; }
 			rect_connect edge;
 			int number_node;
